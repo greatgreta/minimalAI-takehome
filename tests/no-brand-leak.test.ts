@@ -27,6 +27,11 @@ function walk(dir: string): string[] {
   });
 }
 
+// The configuration page may import brand profiles from src/brands (that is where the values live);
+// that one import path is stripped before scanning. Nothing else is allowed.
+const ALLOWED_IMPORT = /^\s*import\b[^;]*from '\.\.\/brands\/profiles';?\s*$/gm;
+const stripAllowed = (source: string) => source.replace(ALLOWED_IMPORT, '');
+
 describe('no brand leak', () => {
   it('detects each kind of leak (the scanner itself works)', () => {
     expect(findLeaks('color: #D1E030;')).toContain('hex colour');
@@ -36,12 +41,18 @@ describe('no brand leak', () => {
     expect(findLeaks('border-radius: var(--agent-radius-md);')).toEqual([]);
   });
 
-  for (const dir of ['src/agent', 'src/config']) {
+  it('the allowance covers only the profiles import', () => {
+    expect(stripAllowed("import { x } from '../brands/profiles';")).toBe('');
+    expect(findLeaks(stripAllowed("import { x } from '../brands/graza';"))).toEqual(['brand name']);
+    expect(findLeaks(stripAllowed("const n = 'Graza';"))).toContain('brand name');
+  });
+
+  for (const dir of ['src/agent', 'src/config', 'src/configuration']) {
     it(`${dir} contains no brand values`, () => {
       const files = walk(dir);
       expect(files.length).toBeGreaterThan(0);
       for (const file of files) {
-        expect(findLeaks(readFileSync(file, 'utf8')), file).toEqual([]);
+        expect(findLeaks(stripAllowed(readFileSync(file, 'utf8'))), file).toEqual([]);
       }
     });
   }
