@@ -53,7 +53,8 @@ button, input { font: inherit; color: inherit; }
 .panel {
   position: absolute;
   right: 16px;
-  bottom: calc(var(--agent-offset-bottom, 16px) + 60px);
+  /* same bottom gap as the launcher, which the open panel replaces */
+  bottom: var(--agent-offset-bottom, 16px);
   width: min(380px, calc(100vw - 32px));
   height: min(560px, calc(100vh - 120px));
   display: flex;
