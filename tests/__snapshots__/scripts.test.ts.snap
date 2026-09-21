@@ -1,0 +1,39 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`graza script > renders the expected transcript 1`] = `
+"Agent: Hey! Looking for an oil? Tell me what's cooking.
+User: My friend swears by Sizzle, she says it's great. I want something for salads and dipping bread, and I care that it's actually fresh. Is that the one?
+Agent: Ooh, your friend has good taste.
+Agent: Here's what I'm hearing: [Friend's pick: Sizzle | For: salads, dipping bread | Fresh]
+Agent: Sizzle is your go-to when you're actually cooking: searing, roasting, big dinner energy. For salads and bread you want Drizzle: the fresh, raw finish, your solo-picnic-in-the-park oil. It's from the current harvest too.
+User: Are they the same price?
+Agent: Same price, 16 EUR each, so it really comes down to how you'll use it. For salads and bread, go Drizzle.
+  [card/product: Drizzle - Finishing oil; 500ml; 16 EUR; Current harvest] [Just Drizzle]
+  [options: Get the trio]
+Agent: Still want Sizzle for the pan? The trio has Sizzle (cooking), Drizzle (finishing) and Frizzle (high-heat), 40 EUR instead of 46.
+User: Just Drizzle
+Agent: Done, it's in your bag. Quick one before you check out: is this your first order with Graza?
+  [options: Yes | No]
+User: Yes
+Agent: Nice, then you get 10% off your next order. Grab Drizzle now and come back for Sizzle once you're cooking more, with the discount."
+`;
+
+exports[`maurten script > renders the expected transcript 1`] = `
+"User: I'm training for a marathon in under 3 weeks and I always hit a wall around 30k. What should I take?
+  [strip: Event: marathon | Time: under 3 weeks | Problem: wall ~30 km]
+Agent: Wall near 30 km: stored carbohydrate usually runs low. Fuel early, not at the wall. Plans are individual. General guide: preload, fuel in race, replenish after.
+  [card/link: Prepare for your marathon -> https://www.maurten.com/prepare-for-your-marathon]
+Agent: In race: Gel 100 or Gel 100 Caf 100.
+Agent: Have you had caffeine in a race before?
+  [options: Yes | No]
+User: No
+  [strip: Event: marathon | Time: under 3 weeks | Problem: wall ~30 km | Caffeine in race: no]
+Agent: Skip caffeine. Nothing new on race day. Gel 100. Postcode to check delivery against your race date.
+User: 1012 AB
+Agent: Gel 100: restock 14 Oct. Race window ends 12 Oct. Too late. Closest in stock: Gel 160, arrives 24 Sep. More carbohydrate per gel.
+  [card/compare: Gel 160 - Gel 160 40 g | Gel 100 25 g | Difference +15 g]
+  [action: add-to-cart gel160 - Add to cart]
+User: Add to cart
+Agent: Added. Arrives 24 Sep. 21 days left. Test it on two long runs.
+  [action: checkout - Checkout]"
+`;

@@ -1,4 +1,6 @@
 import type { Plugin, Connect } from 'vite';
+import '../src/brands/register';
+import { buildSnippet, defaultConfig } from '../src/config/codec';
 
 /**
  * Map clean URLs to their .html entry so local dev + preview match Vercel `cleanUrls`.
@@ -67,8 +69,9 @@ export function injectAgentSnippet(): Plugin {
   };
 
   function snippetFor(brandId: string): string {
-    // Phase 2 replaces this with buildSnippet(defaultConfig(brandId), '').
-    return `<script src="/agent.js" data-brand="${brandId}"></script>`;
+    // Same codec + buildSnippet a merchant's configuration page will use. Relative origin so the
+    // snippet works on any host (dev, preview, deploy).
+    return buildSnippet(defaultConfig(brandId), '');
   }
 
   return {
