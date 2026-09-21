@@ -199,7 +199,7 @@ export interface ComposerParts {
   reset: HTMLButtonElement;
 }
 
-export function Composer(placeholder: string, scriptedLabel: string, resetLabel: string): ComposerParts {
+export function Composer(placeholder: string, resetLabel: string): ComposerParts {
   const root = el('form', 'composer');
   const row = el('div', 'composer-row');
   const input = el('input');
@@ -213,7 +213,7 @@ export function Composer(placeholder: string, scriptedLabel: string, resetLabel:
   const meta = el('div', 'composer-meta');
   const reset = el('button', 'link-btn', resetLabel);
   reset.type = 'button';
-  meta.append(el('span', undefined, scriptedLabel), reset);
+  meta.append(reset);
 
   root.append(row, meta);
   return { root, input, send, reset };

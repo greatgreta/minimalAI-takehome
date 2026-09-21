@@ -170,7 +170,7 @@ export class MinimalAgent extends HTMLElement {
     this.#list.setAttribute('aria-live', 'polite');
     this.#stripHost = document.createElement('div');
 
-    this.#composer = Composer(t.voice.placeholder, 'Scripted demo', 'Reset');
+    this.#composer = Composer(t.voice.placeholder, 'Reset');
     this.#composer.root.addEventListener('submit', (e) => {
       e.preventDefault();
       this.#send();

@@ -196,7 +196,7 @@ button, input { font: inherit; color: inherit; }
   border: var(--agent-border) solid var(--agent-line);
   border-radius: var(--agent-radius-md);
 }
-.composer-meta { display: flex; justify-content: space-between; align-items: center; font-size: var(--agent-small-size); color: var(--agent-ink-muted); }
+.composer-meta { display: flex; justify-content: flex-end; align-items: center; font-size: var(--agent-small-size); color: var(--agent-ink-muted); }
 .link-btn { background: none; border: 0; padding: 0; text-decoration: underline; cursor: pointer; }
 
 /* ---------- small screens: full-width bottom sheet ---------- */
