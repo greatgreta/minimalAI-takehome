@@ -43,6 +43,7 @@ export class MinimalAgent extends HTMLElement {
   #busy = false;
   #typing = false;
   #greeted = false;
+  #usedBranches = new Set<string>();
   #epoch = 0;
 
   // structure
@@ -108,6 +109,7 @@ export class MinimalAgent extends HTMLElement {
     this.#busy = false;
     this.#typing = false;
     this.#greeted = false;
+    this.#usedBranches.clear();
     this.#renderAll();
     if (this.#open) this.#greetIfNeeded();
   }
@@ -224,16 +226,22 @@ export class MinimalAgent extends HTMLElement {
   }
 
   #handlers(): Handlers {
+    const canTap = (id: string) =>
+      !this.#busy &&
+      (id === this.#pendingReplyId() || (this.#brain.isBranch(id) && !this.#usedBranches.has(id)));
     return {
-      pendingReplyId: () => (this.#busy ? null : this.#pendingReplyId()),
+      canTap,
+      stale: (step) => step < this.#state.index,
+      used: (id) => this.#usedBranches.has(id),
       onLink: (href) => this.#emit('agent:open-link', { href }),
       onTap: (replyId, meta) => {
         if (this.#busy) return;
         if (replyId === undefined) {
-          meta.event?.(); // handoff (e.g. checkout): the agent never takes payment
+          meta.event?.(); // standalone action (checkout handoff, add a product): no script change
           return;
         }
-        if (replyId !== this.#pendingReplyId()) return;
+        if (!canTap(replyId)) return;
+        if (replyId !== this.#pendingReplyId()) this.#usedBranches.add(replyId);
         meta.event?.();
         void this.#advance({ type: 'reply', id: replyId });
       },
@@ -257,10 +265,10 @@ export class MinimalAgent extends HTMLElement {
       turns[0] = { ...turns[0], text: event.text };
     }
     this.#composer.input.value = '';
-    await this.#play(turns);
+    await this.#play(turns, out.step);
   }
 
-  async #play(turns: Turn[]): Promise<void> {
+  async #play(turns: Turn[], step = -1): Promise<void> {
     const epoch = ++this.#epoch;
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const unit = reduced ? 0 : this.#tokens.motion.duration;
@@ -277,7 +285,7 @@ export class MinimalAgent extends HTMLElement {
         if (epoch !== this.#epoch) return;
         this.#typing = false;
       }
-      this.#push(turn, r);
+      this.#push(turn, r, step);
       this.#renderAll(false);
     }
 
@@ -285,7 +293,7 @@ export class MinimalAgent extends HTMLElement {
     this.#renderAll();
   }
 
-  #push(turn: Turn, r: (s: string) => string): void {
+  #push(turn: Turn, r: (s: string) => string, step: number): void {
     switch (turn.kind) {
       case 'text':
         this.#items.push({ kind: 'message', from: turn.from, text: r(turn.text) });
@@ -303,12 +311,13 @@ export class MinimalAgent extends HTMLElement {
         this.#items.push({
           kind: 'replies',
           options: turn.options.map((o) => ({ id: o.id, label: r(o.label) })),
+          step,
         });
         break;
       case 'insightCard': {
         const { kind: _k, ...card } = turn;
         void _k;
-        this.#items.push({ kind: 'card', card: this.#resolveCard(card as never, r) });
+        this.#items.push({ kind: 'card', card: this.#resolveCard(card as never, r), step });
         break;
       }
       case 'action':
@@ -318,6 +327,7 @@ export class MinimalAgent extends HTMLElement {
           productId: turn.productId,
           label: r(turn.label),
           replyId: turn.replyId,
+          step,
         });
         break;
     }
@@ -357,7 +367,9 @@ export class MinimalAgent extends HTMLElement {
   #renderList(scroll = true): void {
     const h = this.#handlers();
     const dispatch = (n: string, d?: unknown) => this.#emit(n, d);
-    const nodes = this.#items.map((item) => ItemView(item, h, dispatch));
+    const nodes = this.#items
+      .map((item) => ItemView(item, h, dispatch))
+      .filter((n): n is HTMLElement => n !== null);
     if (this.#typing) {
       const t = document.createElement('div');
       t.className = 'typing';

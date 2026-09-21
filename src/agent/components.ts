@@ -7,10 +7,11 @@ import type { Constraint, InsightCard, QuickReply } from './brain';
 export type Item =
   | { kind: 'message'; from: 'agent' | 'user'; text: string }
   | { kind: 'chips'; lead: string; parsed: Constraint[] }
-  | { kind: 'replies'; options: QuickReply[] }
-  | { kind: 'card'; card: InsightCard }
+  | { kind: 'replies'; options: QuickReply[]; step: number }
+  | { kind: 'card'; card: InsightCard; step: number }
   | {
       kind: 'action';
+      step: number;
       action: 'add-to-cart' | 'checkout';
       productId?: string;
       label: string;
@@ -18,10 +19,14 @@ export type Item =
     };
 
 export interface Handlers {
-  /** Tap on a control. `replyId` advances the script when it matches the pending reply. */
+  /** Tap on a control. `replyId` advances the script (or plays a side branch); undefined is a handoff. */
   onTap(replyId: string | undefined, meta: { event?: () => void }): void;
-  /** Which reply id the script is currently waiting for (null if none). */
-  pendingReplyId(): string | null;
+  /** Whether a reply id can be played right now (the pending main reply, or an unused branch). */
+  canTap(replyId: string): boolean;
+  /** A control from a step the shopper has already moved past. It is hidden, not left greyed out. */
+  stale(step: number): boolean;
+  /** A side branch that has already been played. */
+  used(replyId: string): boolean;
   onLink(href: string): void;
 }
 
@@ -84,7 +89,7 @@ function Button(label: string, primary: boolean, enabled: boolean, onClick: () =
 export function QuickReplies(options: QuickReply[], h: Handlers): HTMLElement {
   const row = el('div', 'replies');
   for (const o of options) {
-    const enabled = h.pendingReplyId() === o.id;
+    const enabled = h.canTap(o.id);
     const b = Button(o.label, false, enabled, () => h.onTap(o.id, {}));
     if (!enabled) b.title = 'Not part of this scripted demo';
     row.append(b);
@@ -98,7 +103,8 @@ export function ActionButton(
   dispatch: (name: string, detail?: unknown) => void,
 ): HTMLElement {
   const isCheckout = item.action === 'checkout';
-  const enabled = isCheckout || (item.replyId !== undefined && h.pendingReplyId() === item.replyId);
+  // No reply id means a standalone action (checkout handoff, add a product): always available.
+  const enabled = item.replyId === undefined || h.canTap(item.replyId);
   const row = el('div', 'replies');
   row.append(
     Button(item.label, true, enabled, () =>
@@ -118,6 +124,7 @@ export function InsightCardView(
   card: InsightCard,
   h: Handlers,
   dispatch: (name: string, detail?: unknown) => void,
+  stale = false,
 ): HTMLElement {
   const root = el('div', `card ${card.variant}`);
   root.append(el('div', 'card-title', card.title));
@@ -149,7 +156,8 @@ export function InsightCardView(
     case 'productAction': {
       for (const line of card.lines) root.append(el('div', 'card-line', line));
       const a = card.action;
-      const enabled = a.replyId !== undefined && h.pendingReplyId() === a.replyId;
+      if (stale) break; // already chosen: the shopper's message shows the choice
+      const enabled = a.replyId === undefined || h.canTap(a.replyId);
       const row = el('div', 'replies');
       row.append(
         Button(a.label, true, enabled, () =>
@@ -167,17 +175,19 @@ export function ItemView(
   item: Item,
   h: Handlers,
   dispatch: (name: string, detail?: unknown) => void,
-): HTMLElement {
+): HTMLElement | null {
   switch (item.kind) {
     case 'message':
       return Message(item.from, item.text);
     case 'chips':
       return ConstraintChips(item.lead, item.parsed);
     case 'replies':
+      if (h.stale(item.step) || item.options.every((o) => h.used(o.id))) return null;
       return QuickReplies(item.options, h);
     case 'card':
-      return InsightCardView(item.card, h, dispatch);
+      return InsightCardView(item.card, h, dispatch, h.stale(item.step));
     case 'action':
+      if (item.replyId !== undefined && h.stale(item.step)) return null;
       return ActionButton(item, h, dispatch);
   }
 }

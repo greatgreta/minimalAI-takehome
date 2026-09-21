@@ -159,7 +159,7 @@ button, input { font: inherit; color: inherit; }
 }
 .btn.primary { background: var(--agent-accent); color: var(--agent-on-accent); }
 .btn:hover:not([aria-disabled="true"]) { transform: translateY(-1px); }
-.btn[aria-disabled="true"] { opacity: 0.45; cursor: default; }
+.btn[aria-disabled="true"] { opacity: 0.6; border-style: dashed; cursor: default; }
 
 /* ---------- insight card ---------- */
 .card {
