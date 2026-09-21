@@ -362,3 +362,22 @@ quantised hex it will emit. Regression test added in `tests/contrast.test.ts`.
 
 - Vercel: not confirmed from here. I tried the GitHub API for deployment status and you declined that
   call, so please check the deployment goes Ready.
+
+---
+
+## Copy pass - demo bar and launcher labels
+
+### What changed
+
+- Demo bar: "Graza" is now "Brand #1" and "Maurten" is now "Brand #2". "Configuration" is now the first
+  button. Routes are unchanged, so `/` still lands on Brand #1 (the Graza replica).
+- Launcher labels come from a `voice.launcher` token in `src/brands/`: Graza "Chat with Olive", Maurten
+  "Ask Maurten". The agent code is unchanged apart from removing the "Scripted demo" label.
+- Both agents: the "Scripted demo" label is removed from the composer; Reset stays, right-aligned.
+
+### Assumptions
+
+- "Maurten > Brand #1" was read as a typo for **Brand #2**.
+- "ask Maurent" was read as **Ask Maurten**.
+- Only the launcher was renamed; the panel title is still "Agent" in both brands.
+- README screenshots in `docs/screens/` were not retaken, so they still show the old labels.
