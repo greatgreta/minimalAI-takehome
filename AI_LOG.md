@@ -328,3 +328,37 @@ quantised hex it will emit. Regression test added in `tests/contrast.test.ts`.
 
 - Vercel: I cannot confirm the deployment from here (no Vercel CLI, and the repo is private), so please
   check it goes Ready.
+
+---
+
+## Job 5 - Disclaimer line removed from the pages
+
+### What changed
+
+- Removed "Unaffiliated design exercise. Prices, offers and product data are fictional." from every page:
+  the Graza footer, the Maurten footer, the visible note on the configuration stub, and the
+  `<meta name="description">` on all three HTML files (it carried the same text). The footers existed
+  only to hold the line, so the footer elements and their CSS (`.gz-foot`, `.mt-foot`, `.note`) are gone,
+  leaving no empty band or extra padding.
+- This overrides step 5 of Job 4 and the earlier HARD RULE. CLAUDE.md no longer has the rule or the
+  header line. README.md keeps one plain sentence at the top (README only): "Unaffiliated design
+  exercise. Brand names and product data are used for a private take-home. Prices, offers and product
+  data are fictional." The README configuration section no longer mentions the line.
+- No test asserted the line, so no test changed and no assertion was weakened.
+
+### Decision points
+
+- **Graza tab placeholders reworded.** They said "Placeholder harvest notes for this design exercise."
+  (and usage, refills): a close variant of the disclaimer visible on the page. Now "Placeholder harvest
+  notes." Alternative: leave them. This is my own placeholder copy, not the Graza conversation copy.
+- **Graza page background.** With the footer gone, the space reserved for the demo bar showed the body's
+  default white under the cream page. Added `body { background: #F6E6D9; }` to the Graza host CSS so the
+  page ends cleanly (brand values are allowed in `src/hosts`).
+- **Left as they were:** the review docs in `docs/screens/review*/` still carry the line in their headers
+  and `AI_LOG.md` history mentions it. Those are documents, not pages. The page `<title>` values say
+  "Minimal AI exercise", which is a title, not the disclaimer.
+
+### Assumptions
+
+- Vercel: not confirmed from here. I tried the GitHub API for deployment status and you declined that
+  call, so please check the deployment goes Ready.
