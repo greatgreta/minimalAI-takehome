@@ -1,2 +1,6 @@
-// Entry for the Graza replica page ("/"). Fleshed out in Phase 4.
-export {};
+// Entry for the Graza replica page ("/").
+import { renderGrazaStore } from './graza-store';
+import { mountDemoBar } from '../demo-bar/demo-bar';
+
+renderGrazaStore(document.getElementById('store-root')!);
+mountDemoBar('graza');
