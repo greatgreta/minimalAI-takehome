@@ -39,7 +39,6 @@ export class MinimalAgent extends HTMLElement {
   #constraints: Constraint[] = [];
   #open = false;
   #minimised = false;
-  #expanded = false;
   #busy = false;
   #typing = false;
   #greeted = false;
@@ -55,7 +54,6 @@ export class MinimalAgent extends HTMLElement {
   #stripHost = document.createElement('div');
   #composer!: ComposerParts;
   #btnMin = document.createElement('button');
-  #btnExpand = document.createElement('button');
   #btnClose = document.createElement('button');
 
   constructor() {
@@ -146,20 +144,14 @@ export class MinimalAgent extends HTMLElement {
       return btn;
     };
     this.#btnMin = mk(document.createElement('button'), '_', 'Minimise', 'min');
-    this.#btnExpand = mk(document.createElement('button'), '[ ]', 'Expand', 'expand');
     this.#btnClose = mk(document.createElement('button'), 'x', 'Close', 'close');
     this.#btnMin.addEventListener('click', () => {
       this.#minimised = !this.#minimised;
       this.#applyState();
     });
-    this.#btnExpand.addEventListener('click', () => {
-      this.#expanded = !this.#expanded;
-      this.#applyState();
-      this.#emit('agent:expand', { expanded: this.#expanded });
-    });
     this.#btnClose.addEventListener('click', () => this.#setOpen(false));
-    // Docked panels get minimise / expand / close; floating panels only close.
-    if (docked) header.append(this.#btnMin, this.#btnExpand);
+    // Docked panels get minimise and close; floating panels only close.
+    if (docked) header.append(this.#btnMin);
     header.append(this.#btnClose);
 
     const body = document.createElement('div');
@@ -189,7 +181,6 @@ export class MinimalAgent extends HTMLElement {
     this.#launcher.hidden = this.#open;
     this.#launcher.setAttribute('aria-expanded', String(this.#open));
     this.#panel.classList.toggle('minimised', this.#minimised);
-    this.#panel.classList.toggle('expanded', this.#expanded);
   }
 
   // ---- open / close -------------------------------------------------------------------------
@@ -199,7 +190,7 @@ export class MinimalAgent extends HTMLElement {
     this.#open = open;
     if (open) this.#minimised = false;
     this.#applyState();
-    this.#emit(open ? 'agent:open' : 'agent:close', { placement: this.#tokens.placement });
+    this.#emit(open ? 'agent:open' : 'agent:close');
     if (open) this.#greetIfNeeded();
     else this.#launcher.focus();
   }

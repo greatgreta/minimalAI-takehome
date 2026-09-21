@@ -74,7 +74,6 @@ button, input { font: inherit; color: inherit; }
   border-bottom: 0;
   border-radius: var(--agent-radius-dock) 0 0 0;
 }
-.docked .panel.expanded { width: min(640px, 100vw); height: min(760px, calc(100vh - 96px)); }
 .panel.minimised { height: auto; }
 .panel.minimised .body { display: none; }
 
@@ -202,7 +201,7 @@ button, input { font: inherit; color: inherit; }
 
 /* ---------- small screens: full-width bottom sheet ---------- */
 @media (max-width: 480px) {
-  .panel, .docked .panel, .docked .panel.expanded {
+  .panel, .docked .panel {
     left: 0;
     right: 0;
     bottom: 0;
@@ -213,9 +212,8 @@ button, input { font: inherit; color: inherit; }
     border-bottom: 0;
     border-radius: var(--agent-radius-lg) var(--agent-radius-lg) 0 0;
   }
-  .docked .panel, .docked .panel.expanded { border-radius: var(--agent-radius-dock) var(--agent-radius-dock) 0 0; }
+  .docked .panel { border-radius: var(--agent-radius-dock) var(--agent-radius-dock) 0 0; }
   .panel.minimised, .docked .panel.minimised { height: auto; }
-  .expand { display: none; }
   .icon-btn { min-width: 44px; min-height: 44px; }
 }
 

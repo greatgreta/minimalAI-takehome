@@ -6,8 +6,8 @@
 //  - z-index sits above the page but below the agent panel (agent host is 1000).
 //  - It exposes its height as --demo-bar-h; pages lift the agent launcher above it at <= 640px.
 //  - It hides while the agent panel is open at <= 480px (agent:open / agent:close) and returns on close.
-//  - An open panel sits at the bottom edge (same gap as the launcher), so it also hides the bar when a
-//    docked panel is expanded (agent:expand) or the viewport is narrower than PANEL_CLEARANCE.
+//  - An open panel sits at the bottom edge (same gap as the launcher), so it also hides the bar when the
+//    viewport is narrower than PANEL_CLEARANCE.
 
 const PANEL_CLEARANCE = 1120;
 
@@ -73,26 +73,19 @@ export function mountDemoBar(current: DemoPage): void {
   document.body.append(nav);
 
   // Agent events bubble and are composed, so they reach the document.
-  const state = { open: false, docked: false, expanded: false };
+  const state = { open: false };
   const update = () => {
     const hide =
-      state.open &&
-      (matchMedia('(max-width: 480px)').matches ||
-        ((state.docked && state.expanded) || innerWidth < PANEL_CLEARANCE));
+      state.open && (matchMedia('(max-width: 480px)').matches || innerWidth < PANEL_CLEARANCE);
     if (hide) nav.setAttribute('data-agent-open', 'true');
     else nav.removeAttribute('data-agent-open');
   };
-  document.addEventListener('agent:open', (e) => {
+  document.addEventListener('agent:open', () => {
     state.open = true;
-    state.docked = (e as CustomEvent).detail?.placement === 'docked';
     update();
   });
   document.addEventListener('agent:close', () => {
     state.open = false;
-    update();
-  });
-  document.addEventListener('agent:expand', (e) => {
-    state.expanded = Boolean((e as CustomEvent).detail?.expanded);
     update();
   });
   addEventListener('resize', update);
