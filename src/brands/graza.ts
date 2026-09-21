@@ -33,6 +33,7 @@ export const graza: Tokens = {
   behaviour: { opening: 'greets', understanding: 'in-chat' },
   voice: {
     launcher: 'Chat with Olive',
+    title: 'Olive',
     placeholder: "Tell me what you're cooking...",
     greeting: "Hey! Looking for an oil? Tell me what's cooking.",
     understandingLead: "Here's what I'm hearing:",

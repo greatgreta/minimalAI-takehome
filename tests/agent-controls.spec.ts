@@ -57,4 +57,5 @@ test('graza floating panel has only a close control', async ({ page }) => {
   await page.goto('/');
   await page.locator('minimal-agent .launcher').click();
   await expect(page.locator('minimal-agent .header .icon-btn')).toHaveCount(1);
+  await expect(page.locator('minimal-agent .title')).toHaveText('Olive');
 });
