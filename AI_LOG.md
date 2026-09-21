@@ -420,3 +420,33 @@ quantised hex it will emit. Regression test added in `tests/contrast.test.ts`.
 
 - "both closed and expanded" was read as the docked launcher (closed) and the docked panel (normal and
   expanded): all three now measure 0px radius and the minimal shadow in the browser.
+
+---
+
+## Job 6 - Removed the expand control
+
+### What changed
+
+- Removed the "[ ]" expand button from the docked panel header, with its handler, aria-label ("Expand"),
+  the `expanded` state and panel class, the `.docked .panel.expanded` size rule, the `.expand` rule in the
+  480px media query, and the `agent:expand` event. Docked panels now have "_" (minimise) and "x" (close);
+  floating panels have only "x". It was driven by the placement rule (`if (docked)`), so it was removed at
+  that level; there was no Maurten-specific code. Graza never rendered it, so nothing changed for Graza.
+- The demo bar no longer tracks the expanded state: it hides for any open panel at 480px and below, or
+  under 1120px wide. `agent:open` no longer carries `{placement}`, which only the expanded rule used.
+- Tests: the docked-panel layout test drops its expanded pass; `scripts/review.mjs` drops the expand step;
+  new `tests/agent-controls.spec.ts` checks the header has exactly Minimise and Close, aligned in one row,
+  44px targets at 375, tab order and 2px focus rings, and that both still work.
+- Older entries in this log that mention `agent:expand` and the expanded panel describe behaviour that no
+  longer exists.
+
+### Decision points
+
+- The button did work on desktop (it widened the panel from 420px to 640px) and was hidden at 480px and
+  below, so phones never saw it. Removed anyway, as asked.
+- The new spec turns on reduced motion so the panel's slide-in cannot skew the position checks; the first
+  version failed at 375 for that reason, not because of the layout.
+
+### Assumptions
+
+- Vercel: not confirmed from here (see earlier entries); please check the deployment goes Ready.
