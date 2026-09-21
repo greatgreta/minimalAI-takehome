@@ -1,8 +1,7 @@
 /* Configuration page. Every value is a --cfg-* custom property so look and feel can be changed here. */
 :root {
   --cfg-font: 'ABC Areal', 'Inter', system-ui, sans-serif;
-  --cfg-serif: 'Source Serif 4', Georgia, serif;
-  --cfg-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --cfg-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; /* code box only */
 
   --cfg-bg: #ffffff;
   --cfg-panel: #fafafa;
@@ -15,9 +14,9 @@
   --cfg-on-button: #ffffff;
   --cfg-bubble: #f0f0ef;
 
-  --cfg-table-head: #f0f0ef;
+  --cfg-table-head: #fafafa;
   --cfg-table-line: #ececeb;
-  --cfg-table-bg: #fcfcfb;
+  --cfg-table-bg: #ffffff;
   --cfg-chip-bg: #f0f0ef;
   --cfg-chip-ink: #9a4040;
   --cfg-dot-line: #dfdbd8;
@@ -87,15 +86,15 @@ body.cfg-page { margin: 0; padding-bottom: 0; background: var(--cfg-bg); color: 
 .cfg-ghost { position: absolute; inset: 0; display: grid; place-items: center; margin: 0; font-size: 14px; color: #b0b0b0; }
 .cfg-widget--table { overflow: auto; }
 
-/* token table: styled like a table in a chat */
-.cfg-table-wrap { padding-top: 77px; padding-bottom: 24px; }
-.cfg-table { width: 453px; max-width: calc(100% - 24px); margin: 0 auto; border-collapse: separate; border-spacing: 0; border: 1px solid var(--cfg-table-line); border-radius: 6px; background: var(--cfg-table-bg); font: 400 12px/15px var(--cfg-serif); color: #252525; overflow: hidden; }
-.cfg-table th { padding: 3px 8px; background: var(--cfg-table-head); font-weight: 600; text-align: left; border-bottom: 1px solid var(--cfg-table-line); }
-.cfg-table th:first-child { width: 133px; }
-.cfg-table td { padding: 4px 8px; vertical-align: top; border-bottom: 1px solid var(--cfg-table-line); }
+/* token table: fills the widget inside a 24px padding, set in the page font */
+.cfg-table-wrap { padding: 24px; }
+.cfg-table { width: 100%; border-collapse: separate; border-spacing: 0; border: 1px solid var(--cfg-table-line); border-radius: 6px; background: var(--cfg-table-bg); font: 400 13px/18px var(--cfg-font); color: var(--cfg-ink); overflow: hidden; }
+.cfg-table th { padding: 6px 12px; background: var(--cfg-table-head); font-weight: 500; text-align: left; border-bottom: 1px solid var(--cfg-table-line); }
+.cfg-table th:first-child { width: 36%; }
+.cfg-table td { padding: 7px 12px; vertical-align: top; border-bottom: 1px solid var(--cfg-table-line); }
 .cfg-table tr:last-child td { border-bottom: 0; }
 .cfg-dot { display: inline-block; width: 10px; height: 10px; margin-right: 4px; border: 1px solid var(--cfg-dot-line); border-radius: 50%; vertical-align: -1px; }
-.cfg-chip { padding: 1px 4px; border-radius: 4px; background: var(--cfg-chip-bg); color: var(--cfg-chip-ink); font: 400 11px/1 var(--cfg-mono); }
+.cfg-chip { padding: 1px 4px; border-radius: 4px; background: var(--cfg-chip-bg); color: var(--cfg-chip-ink); font: 400 12px/1 var(--cfg-font); }
 .cfg-table tr.is-new td { animation: cfg-flash 800ms ease-out; }
 @keyframes cfg-flash { from { background: var(--cfg-highlight); } to { background: transparent; } }
 
@@ -135,7 +134,6 @@ body.cfg-page { margin: 0; padding-bottom: 0; background: var(--cfg-bg); color: 
   .cfg-input { flex-basis: 100%; }
   .cfg-reset { position: static; display: block; margin: 8px 0 0 auto; }
   .cfg-row { grid-template-columns: 1fr; margin-left: 0; }
-  .cfg-table-wrap { padding-top: 24px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
