@@ -1,4 +1,4 @@
-// Semantic token schema. Roles only — no brand values live here (those are in src/brands/*.ts).
+// Semantic token schema. Roles only - no brand values live here (those are in src/brands/*.ts).
 // The agent is styled entirely from these tokens, emitted as --agent-* custom properties.
 
 export interface ColorTokens {

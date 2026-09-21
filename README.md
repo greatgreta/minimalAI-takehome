@@ -7,11 +7,11 @@ differently because their *tokens* differ, never because the code forks.
 
 ## What this is
 
-- `dist/agent.js` — one custom element (`<minimal-agent>`, Shadow DOM) styled only through
+- `dist/agent.js` - one custom element (`<minimal-agent>`, Shadow DOM) styled only through
   `--agent-*` CSS custom properties. Same code for every brand.
-- `/` — Graza store replica, embedding the agent with the exact `<script>` a merchant would paste.
-- `/maurten` — Maurten store replica, same agent, different tokens.
-- `/configuration` — configuration page (design to be added later).
+- `/` - Graza store replica, embedding the agent with the exact `<script>` a merchant would paste.
+- `/maurten` - Maurten store replica, same agent, different tokens.
+- `/configuration` - configuration page (design to be added later).
 - A neutral demo bar (bottom centre) switches between the three.
 
 ## Run
@@ -26,7 +26,7 @@ npm test          # unit tests (Vitest)
 
 ## Status
 
-Scaffold in progress — see `AI_LOG.md` for phase-by-phase decisions.
+Scaffold in progress - see `AI_LOG.md` for phase-by-phase decisions.
 
 The token pipeline, sliders, contrast guard, config codec and `buildSnippet` are built and tested
 without a UI, so the configuration page can be wired to them later.

@@ -1,4 +1,4 @@
-# Minimal AI take-home — working rules
+# Minimal AI take-home - working rules
 
 Unaffiliated design exercise. Prices, offers and product data are fictional.
 
