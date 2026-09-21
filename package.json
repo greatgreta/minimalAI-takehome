@@ -26,5 +26,8 @@
     "@fontsource/dm-sans": "^5.1.0",
     "@fontsource/eb-garamond": "^5.1.0",
     "@fontsource/inter": "^5.1.0"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }
