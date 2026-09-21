@@ -88,3 +88,7 @@ docs/           graza-copy.md (verbatim source of the Graza script), screenshots
   is allowed, in the Graza replica hero only. No other brand photography anywhere.
 - All product data is fictional and every field is marked `verified: false`.
 - Brand fonts are licensed, so self-hosted stand-ins are used (EB Garamond and DM Sans, Inter).
+
+## Fonts
+
+ABC Areal is a commercial typeface by ABC Dinamo (https://abcdinamo.com/typefaces/areal). The font files in public/fonts are included for this take-home demo only. Please do not reuse or redistribute them. To use ABC Areal in your own project, get a licence from ABC Dinamo.
