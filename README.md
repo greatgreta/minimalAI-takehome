@@ -17,7 +17,7 @@ differently (floating vs docked, greets vs silent, in-chat vs strip understandin
   `--agent-*` CSS custom properties. Same code for every brand. Works at 375px.
 - `/`: Graza store replica, loading the agent with the exact `<script>` a merchant would paste.
 - `/maurten`: Maurten store replica, same agent, different tokens.
-- `/configuration`: empty page for now (see below).
+- `/configuration`: scripted page that reads a store and builds a snippet (see below).
 - A neutral demo bar (bottom centre) switches between the three.
 - A scripted, deterministic conversation per brand (no LLM): an opening message with at least two
   constraints, one obstacle, and an action at the end.
@@ -41,8 +41,17 @@ is not read there. Use `npm run build && npm run preview` to see exact merchant 
 
 ## Configuration page
 
-`/configuration` is an empty page (demo bar and `<main id="config-root">`).
-The logic it will drive already exists, tested and UI-free:
+`/configuration` walks a merchant through making an agent, built from two Figma screenshots. It is
+scripted and deterministic, with no network:
+
+- **Scripted:** the store reading (`readStore()` in `src/configuration/read-store.ts`, a stand-in for an
+  extraction service) and the conversation (a pure state machine in `src/configuration/script.ts`).
+- **Real:** the token table is read from the brand profile (`src/brands/profiles.ts` and the brand
+  tokens), and the code snippet is built with the real `resolveTokens`, `encodeConfig` and
+  `buildSnippet`, so pasting it into a page mounts the agent with those settings.
+- Type is ABC Areal (`--cfg-font` in `src/configuration/styles.css` swaps it in one line).
+
+The logic it drives lives in:
 
 - `src/config/codec.ts`: `AgentConfig`, `encodeConfig` / `decodeConfig`, `resolveTokens`,
   `buildSnippet(config, origin)`
@@ -60,6 +69,7 @@ src/catalogue/  fictional product data (every field verified:false)
 src/agent/      the embeddable custom element, brain interface, components (brand-blind)
 src/scripts/    deterministic per-brand conversations (copy with {placeholders})
 src/hosts/      store replicas (brand values allowed here)
+src/configuration/  the /configuration page (script, table, chat, styles)
 src/demo-bar/   neutral demo navigation
 vite/           dev/build plugins: clean URLs, snippet injection
 tests/          unit tests, no-brand-leak, brand fuzz, Playwright 375px spec
@@ -69,7 +79,7 @@ docs/           graza-copy.md (verbatim source of the Graza script), screenshots
 ## Honest limits
 
 - The agent is scripted. There is no LLM; `AgentBrain` is the interface an LLM brain would implement.
-- The configuration page is not built yet.
+- The configuration page is scripted: it reads one fictional store and follows a fixed conversation.
 - No backend. The postcode is checked in memory only and never stored or sent.
 - Stores are replicas with flat colour blocks instead of imagery, with one exception: the Graza hero
   uses a real, third-party Graza product photo for this private exercise. One real Graza product photo
