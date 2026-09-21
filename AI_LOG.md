@@ -193,3 +193,35 @@ Done as part of Phase 4 (page stub) plus the README section above. No controls, 
 ### Cut
 
 - None.
+
+---
+
+## Phase 6 - Tests
+
+### Decision points
+
+- **Playwright uses the system Google Chrome** (`channel: 'chrome'`), so no browser download was needed
+  even though no Playwright Chromium was installed. `@playwright/test` is a dev dependency (library only).
+  Alternative: skip e2e per the "only if Chromium is available" rule; Chrome counted as available.
+- **`npm run test` is Vitest only; e2e is `npm run test:e2e`** (needs `npm run build` first, serves the
+  production build). Vitest only picks up `*.test.ts`, so `.spec.ts` files never run under it.
+- **Screenshots at the obstacle turn:** Graza after two sends (Sizzle does not fit, then the Drizzle card
+  and trio escape route are on screen); Maurten after the postcode (restock too late, compare card).
+  Alternative for Graza: stop after the first send. `npm run shots` needs a prior `npm run build`.
+- **Fuzz runs 300 seeded configs** (mulberry32, seed 20260921) across graza, maurten and neutral.
+- **no-brand-leak scans `.ts` under src/agent and src/config** for hex colours, px radii, font names and
+  brand names, and has a self-test proving each rule fires.
+
+### Bug found by the fuzz test (fixed)
+
+The contrast guard measured contrast on the unrounded OKLCH colour, but the emitted hex is 8-bit, so a
+cyan accent with white `onAccent` landed at 4.47:1 while reporting a pass. The guard now measures the
+quantised hex it will emit. Regression test added in `tests/contrast.test.ts`.
+
+### Assumptions
+
+- The no-brand-leak "px radius" rule is `radius ... <n>px` on one line; `var(--agent-radius-*)` passes.
+
+### Cut
+
+- None. (Playwright 375 spec, brand fuzz test and screenshots all built.)
