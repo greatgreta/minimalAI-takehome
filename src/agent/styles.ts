@@ -19,7 +19,11 @@ button, input { font: inherit; color: inherit; }
 [hidden] { display: none !important; }
 :focus-visible { outline: 2px solid var(--agent-ink); outline-offset: 2px; }
 
-.launcher, .panel { pointer-events: auto; }
+.launcher, .panel {
+  pointer-events: auto;
+  /* elevation cue from the ink token, so a launcher stays distinct from a same-coloured host button */
+  box-shadow: 0 2px 10px color-mix(in srgb, var(--agent-ink) 22%, transparent);
+}
 
 /* ---------- launcher ---------- */
 .launcher {
@@ -69,7 +73,7 @@ button, input { font: inherit; color: inherit; }
   border-bottom: 0;
   border-radius: var(--agent-radius-md) 0 0 0;
 }
-.docked .panel.expanded { width: min(640px, 100vw); height: calc(100vh - 24px); }
+.docked .panel.expanded { width: min(640px, 100vw); height: min(760px, calc(100vh - 96px)); }
 .panel.minimised { height: auto; }
 .panel.minimised .body { display: none; }
 
@@ -210,6 +214,7 @@ button, input { font: inherit; color: inherit; }
   }
   .panel.minimised, .docked .panel.minimised { height: auto; }
   .expand { display: none; }
+  .icon-btn { min-width: 44px; min-height: 44px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
