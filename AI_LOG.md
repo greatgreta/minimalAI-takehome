@@ -450,3 +450,10 @@ quantised hex it will emit. Regression test added in `tests/contrast.test.ts`.
 ### Assumptions
 
 - Vercel: not confirmed from here (see earlier entries); please check the deployment goes Ready.
+
+---
+
+## Graza panel title
+
+- The Graza panel header now says "Olive" instead of "Agent" (`voice.title` in `src/brands/graza.ts`). The
+  panel's aria-label follows the same value. Covered by the Graza case in `tests/agent-controls.spec.ts`.
