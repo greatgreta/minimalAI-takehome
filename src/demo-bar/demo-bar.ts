@@ -6,6 +6,10 @@
 //  - z-index sits above the page but below the agent panel (agent host is 1000).
 //  - It exposes its height as --demo-bar-h; pages lift the agent launcher above it at <= 640px.
 //  - It hides while the agent panel is open at <= 480px (agent:open / agent:close) and returns on close.
+//  - A docked panel sits flush to the bottom edge, so it also hides the bar when that panel is
+//    expanded or the viewport is narrower than DOCKED_CLEARANCE (agent:expand).
+
+const DOCKED_CLEARANCE = 1120;
 
 export type DemoPage = 'graza' | 'maurten' | 'configuration';
 
@@ -48,9 +52,7 @@ body { padding-bottom: calc(var(--demo-bar-h) + 24px); }
 .demo-bar a:hover { background: #eeeeee; }
 .demo-bar a[aria-current="page"] { background: #222222; color: #ffffff; }
 .demo-bar a:focus-visible { outline: 2px solid #2563eb; outline-offset: 2px; }
-@media (max-width: 480px) {
-  .demo-bar[data-agent-open="true"] { display: none; }
-}
+.demo-bar[data-agent-open="true"] { display: none; }
 `;
 
 export function mountDemoBar(current: DemoPage): void {
@@ -71,6 +73,27 @@ export function mountDemoBar(current: DemoPage): void {
   document.body.append(nav);
 
   // Agent events bubble and are composed, so they reach the document.
-  document.addEventListener('agent:open', () => nav.setAttribute('data-agent-open', 'true'));
-  document.addEventListener('agent:close', () => nav.removeAttribute('data-agent-open'));
+  const state = { open: false, docked: false, expanded: false };
+  const update = () => {
+    const hide =
+      state.open &&
+      (matchMedia('(max-width: 480px)').matches ||
+        (state.docked && (state.expanded || innerWidth < DOCKED_CLEARANCE)));
+    if (hide) nav.setAttribute('data-agent-open', 'true');
+    else nav.removeAttribute('data-agent-open');
+  };
+  document.addEventListener('agent:open', (e) => {
+    state.open = true;
+    state.docked = (e as CustomEvent).detail?.placement === 'docked';
+    update();
+  });
+  document.addEventListener('agent:close', () => {
+    state.open = false;
+    update();
+  });
+  document.addEventListener('agent:expand', (e) => {
+    state.expanded = Boolean((e as CustomEvent).detail?.expanded);
+    update();
+  });
+  addEventListener('resize', update);
 }

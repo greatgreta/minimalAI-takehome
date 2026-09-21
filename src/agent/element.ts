@@ -155,6 +155,7 @@ export class MinimalAgent extends HTMLElement {
     this.#btnExpand.addEventListener('click', () => {
       this.#expanded = !this.#expanded;
       this.#applyState();
+      this.#emit('agent:expand', { expanded: this.#expanded });
     });
     this.#btnClose.addEventListener('click', () => this.#setOpen(false));
     // Docked panels get minimise / expand / close; floating panels only close.
@@ -198,7 +199,7 @@ export class MinimalAgent extends HTMLElement {
     this.#open = open;
     if (open) this.#minimised = false;
     this.#applyState();
-    this.#emit(open ? 'agent:open' : 'agent:close');
+    this.#emit(open ? 'agent:open' : 'agent:close', { placement: this.#tokens.placement });
     if (open) this.#greetIfNeeded();
     else this.#launcher.focus();
   }
