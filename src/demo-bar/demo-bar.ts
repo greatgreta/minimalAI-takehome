@@ -6,10 +6,10 @@
 //  - z-index sits above the page but below the agent panel (agent host is 1000).
 //  - It exposes its height as --demo-bar-h; pages lift the agent launcher above it at <= 640px.
 //  - It hides while the agent panel is open at <= 480px (agent:open / agent:close) and returns on close.
-//  - A docked panel sits flush to the bottom edge, so it also hides the bar when that panel is
-//    expanded or the viewport is narrower than DOCKED_CLEARANCE (agent:expand).
+//  - An open panel sits at the bottom edge (same gap as the launcher), so it also hides the bar when a
+//    docked panel is expanded (agent:expand) or the viewport is narrower than PANEL_CLEARANCE.
 
-const DOCKED_CLEARANCE = 1120;
+const PANEL_CLEARANCE = 1120;
 
 export type DemoPage = 'graza' | 'maurten' | 'configuration';
 
@@ -78,7 +78,7 @@ export function mountDemoBar(current: DemoPage): void {
     const hide =
       state.open &&
       (matchMedia('(max-width: 480px)').matches ||
-        (state.docked && (state.expanded || innerWidth < DOCKED_CLEARANCE)));
+        ((state.docked && state.expanded) || innerWidth < PANEL_CLEARANCE));
     if (hide) nav.setAttribute('data-agent-open', 'true');
     else nav.removeAttribute('data-agent-open');
   };

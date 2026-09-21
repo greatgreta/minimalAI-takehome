@@ -32,6 +32,6 @@ test('graza floating panel never touches the demo bar', async ({ page }) => {
   await page.goto('/');
   await page.locator('minimal-agent .launcher').click();
   const p = (await box(page.locator('minimal-agent .panel')))!;
-  const b = (await box(page.locator('nav[aria-label="Demo navigation"]')))!;
-  expect(overlap(p, b)).toBe(false);
+  const bar = page.locator('nav[aria-label="Demo navigation"]');
+  if (await bar.isVisible()) expect(overlap(p, (await box(bar))!), 'panel overlaps a visible demo bar').toBe(false);
 });
