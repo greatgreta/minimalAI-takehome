@@ -110,3 +110,42 @@ choice, what was chosen, and the alternative), plus any "Assumptions" and "Cut" 
 ### Cut
 
 - None.
+
+---
+
+## Phase 3 - Agent runtime
+
+### Decision points
+
+- **Brand "packs" in the registry.** The agent asks the registry for `{data, script}` by brand id, so
+  no brand is named in `src/agent`. `src/brands/register.ts` (a side-effect import) fills it, and the
+  bundle therefore contains both brands' data. Alternative: one bundle per brand, rejected (thesis is
+  one code path).
+- **`replyId` on action buttons.** A card or action button carries the script reply id it plays.
+  Buttons whose id is not the script's pending reply are shown disabled ("Not part of this scripted
+  demo"), which is how "only the [Yes] path is scripted" and "Get the trio" behave. Checkout has no
+  reply id: it only dispatches `agent:checkout` (handoff, no payment).
+- **Composer honesty.** Pre-fills the next scripted user line; if the shopper types something else, the
+  transcript shows their text and the script advances anyway. Reset restarts and replays the greeting.
+- **Launcher hides while the panel is open** (both placements). Alternative: keep it as a toggle.
+- **Fonts are not bundled in agent.js.** `@font-face` cannot live inside shadow DOM, so the host page
+  loads the font stand-ins (done in Phase 4 via `@fontsource`). A merchant's page would load its own.
+- **Buttons and the composer use the `md` radius token, not `pill`,** so Maurten reads square and
+  Graza rounded from the same CSS. Launcher and chips keep `pill`/`sm`.
+- **Understanding placement** is decided in the element from the `understanding` token; scripts never
+  see it. In strip mode the strip is always visible ("Context / Nothing yet").
+- **Dev `/agent.js`** is a tiny classic script that injects a module script for the source entry, so
+  `document.currentScript.dataset.config` is NOT available in dev. Preview/production use the real
+  IIFE. Assumption: acceptable for the take-home; use `npm run build && npm run preview` to see exact
+  merchant behaviour.
+
+### Assumptions
+
+- Voice strings `voice.launcher` and `voice.title` are optional; defaults are the generic labels
+  "Ask" (floating), "Agent" (docked), and title "Agent".
+- Verified in the built-in browser at a narrow (~344px) viewport: both scripts play to the end, events
+  fire, silent vs greeting opening, strip vs in-chat understanding, bottom-sheet layout.
+
+### Cut
+
+- None.
