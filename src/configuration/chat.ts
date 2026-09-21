@@ -8,12 +8,15 @@ const PLACEHOLDER = 'Ask anything or attach a reference';
 export class Chat {
   readonly el = document.createElement('div');
   readonly #log = document.createElement('div');
+  readonly #inner = document.createElement('div');
   readonly #form = document.createElement('form');
   readonly #input = document.createElement('input');
   readonly #send = document.createElement('button');
   readonly #mic = document.createElement('span');
   #typing: HTMLElement | null = null;
   #queued = false;
+  /** True while the reader is at the bottom; new content then keeps the last line in view. */
+  #pinned = true;
 
   constructor(private readonly onSend: () => void) {
     this.el.className = 'cfg-chat';
@@ -21,6 +24,18 @@ export class Chat {
     this.#log.className = 'cfg-chat-log';
     this.#log.setAttribute('role', 'log');
     this.#log.setAttribute('aria-live', 'polite');
+    this.#inner.className = 'cfg-chat-inner';
+    this.#log.append(this.#inner);
+    this.#log.addEventListener('scroll', () => {
+      this.#pinned = this.#log.scrollHeight - this.#log.scrollTop - this.#log.clientHeight < 12;
+    });
+    // Late layout (font swap, the card growing, a resize) must not leave the last line under the composer.
+    new ResizeObserver(() => {
+      if (this.#pinned) this.#log.scrollTop = this.#log.scrollHeight;
+    }).observe(this.#inner);
+    new ResizeObserver(() => {
+      if (this.#pinned) this.#log.scrollTop = this.#log.scrollHeight;
+    }).observe(this.#log);
 
     this.#form.className = 'cfg-composer';
     this.#input.type = 'text';
@@ -68,7 +83,7 @@ export class Chat {
       t.setAttribute('aria-label', 'Typing');
       t.innerHTML = '<span></span><span></span><span></span>';
       this.#typing = t;
-      this.#log.append(t);
+      this.#inner.append(t);
       this.#scroll();
     } else if (!on && this.#typing) {
       this.#typing.remove();
@@ -104,13 +119,14 @@ export class Chat {
     noteEl.className = 'cfg-note';
     noteEl.textContent = note;
     wrap.append(box, copy, noteEl);
-    this.#log.append(wrap);
+    this.#inner.append(wrap);
     this.#scroll();
     return copy;
   }
 
   clear(): void {
-    this.#log.replaceChildren();
+    this.#inner.replaceChildren();
+    this.#pinned = true;
     this.#typing = null;
     this.queue(null);
   }
@@ -119,11 +135,12 @@ export class Chat {
     const m = document.createElement('div');
     m.className = cls;
     m.textContent = text;
-    this.#log.append(m);
+    this.#inner.append(m);
     this.#scroll();
   }
 
   #scroll(): void {
+    this.#pinned = true;
     this.#log.scrollTop = this.#log.scrollHeight;
   }
 }

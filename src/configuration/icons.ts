@@ -16,11 +16,9 @@ export const micIcon = svg(
   '<rect x="3.25" y="0.75" width="5.5" height="9.5" rx="2.75" fill="currentColor"/><path d="M1 7.5a5 5 0 0 0 10 0M6 12.5V15" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>',
 );
 
-export const arrowIcon = svg(
-  14,
-  14,
-  '<path d="M7 11.5V2.5M3 6.5l4-4 4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>',
-);
+// Send arrow: drawn on a 14 unit grid, shown at exactly 16x16.
+export const arrowIcon =
+  '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 14 14" fill="none" aria-hidden="true" focusable="false"><path d="M7 11.5V2.5M3 6.5l4-4 4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
 // Step icons: drawn on a 14 unit grid, shown at 18px.
 const step = (body: string) =>

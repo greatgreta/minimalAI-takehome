@@ -101,7 +101,8 @@ body.cfg-page { margin: 0; padding-bottom: 0; background: var(--cfg-bg); color: 
 /* ---------- chat ---------- */
 .cfg-widget--chat { padding: 0; }
 .cfg-chat { display: flex; flex-direction: column; height: 100%; }
-.cfg-chat-log { flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; padding: 24px 24px 12px; }
+.cfg-chat-log { flex: 1; min-height: 0; overflow-y: auto; padding: 16px 24px; /* 16px above the first and below the last line; soft edges so a scrolled line fades instead of being sliced by the card */ -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 16px, #000 calc(100% - 16px), transparent 100%); mask-image: linear-gradient(to bottom, transparent 0, #000 16px, #000 calc(100% - 16px), transparent 100%); }
+.cfg-chat-inner { display: flex; flex-direction: column; gap: 16px; }
 .cfg-msg { font-size: 15px; line-height: 22px; overflow-wrap: anywhere; }
 .cfg-msg--user { align-self: flex-end; max-width: 80%; padding: 8px 14px; border-radius: 16px; background: var(--cfg-bubble); }
 .cfg-typing { display: flex; gap: 4px; padding: 8px 0; }
@@ -116,7 +117,7 @@ body.cfg-page { margin: 0; padding-bottom: 0; background: var(--cfg-bg); color: 
 .cfg-composer input:focus { outline: none; }
 .cfg-composer-row { display: flex; justify-content: space-between; align-items: center; height: 34px; padding: 0 16px 6px 17px; color: var(--cfg-muted); }
 .cfg-composer-icon { display: inline-flex; }
-.cfg-send { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; margin-right: -4px; padding: 0; border: 0; border-radius: 50%; background: var(--cfg-button); color: var(--cfg-on-button); cursor: pointer; }
+.cfg-send { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; margin-right: -4px; padding: 0; border: 0; border-radius: 50%; background: var(--cfg-button-active); color: var(--cfg-on-button); cursor: pointer; }
 .cfg-send:focus-visible { outline: 2px solid var(--cfg-ink); outline-offset: 2px; }
 
 .cfg-snippet { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
