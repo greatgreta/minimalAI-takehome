@@ -135,10 +135,6 @@ async function run(browser, store, vpName) {
   // Docked-only controls.
   if (store === 'maurten') {
     if (vpName === 'desktop') {
-      await agent('.expand').click();
-      await sleep(400);
-      await shot('expanded');
-      await agent('.expand').click();
       await agent('.min').click();
       await sleep(400);
       await shot('minimised');

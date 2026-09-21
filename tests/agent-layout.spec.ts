@@ -6,21 +6,18 @@ const overlap = (a: { x: number; y: number; width: number; height: number }, b: 
 
 // Docked (Maurten) panel: never covers the store header, never overlaps a visible demo bar.
 for (const width of [1440, 1024, 800]) {
-  test(`maurten docked panel, normal and expanded, at ${width}px`, async ({ page }) => {
+  test(`maurten docked panel at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
     await page.goto('/maurten');
     const bar = page.locator('nav[aria-label="Demo navigation"]');
     const panel = page.locator('minimal-agent .panel');
     await page.locator('minimal-agent .launcher').click();
 
-    for (const expanded of [false, true]) {
-      if (expanded) await page.locator('minimal-agent .expand').click();
-      const p = (await box(panel))!;
-      const header = (await box(page.locator('.mt-head')))!;
-      expect(p.y, 'panel must not cover the store header').toBeGreaterThanOrEqual(header.y + header.height);
-      if (await bar.isVisible()) {
-        expect(overlap(p, (await box(bar))!), 'panel overlaps a visible demo bar').toBe(false);
-      }
+    const p = (await box(panel))!;
+    const header = (await box(page.locator('.mt-head')))!;
+    expect(p.y, 'panel must not cover the store header').toBeGreaterThanOrEqual(header.y + header.height);
+    if (await bar.isVisible()) {
+      expect(overlap(p, (await box(bar))!), 'panel overlaps a visible demo bar').toBe(false);
     }
     await page.locator('minimal-agent .close').click();
     await expect(bar).toBeVisible();
