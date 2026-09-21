@@ -149,3 +149,33 @@ choice, what was chosen, and the alternative), plus any "Assumptions" and "Cut" 
 ### Cut
 
 - None.
+
+---
+
+## Phase 4 - Store replicas, pages and demo bar
+
+### Decision points
+
+- **Replica fidelity.** Layout, type scale, spacing and colour system follow the references (Graza: cream
+  page, olive ink, lime fill, serif display, rounded boxes, tabs, "meet the lineup"; Maurten: white
+  5-column hairline grid, muted nav). Imagery is flat colour blocks, and I wrote all page copy myself
+  (the Maurten intro line and Graza tab notes are original placeholders, not the sites' copy).
+- **Maurten grid shows only the catalogue products** (9 tiles incl. "Fuel Planner" as a link tile), not
+  the reference's full 40 items (bottles, flasks, collections were left out).
+- **`--demo-bar-h` = 58px** (12px gap + 46px bar), so the launcher offset `var(--demo-bar-h) + 12px`
+  clears the bar at <= 640px. Checked in the browser pane: bounding boxes do not overlap, no horizontal
+  scroll. Docked Maurten launcher has no offset on desktop (sits flush at the bottom right).
+- **Fonts:** latin subsets only (`@fontsource/*/latin-*.css`), imported by the store replicas, since
+  `@font-face` cannot live in the agent's shadow DOM.
+- **Demo bar colours are literal neutrals** in `src/demo-bar` (excluded from the no-brand-leak test on
+  purpose). Hides at <= 480px while the agent panel is open, via `data-agent-open`.
+- **Page-level `body {margin:0}`** inline in each html file so replicas are edge to edge.
+
+### Assumptions
+
+- Configuration page: neutral grey background, the unaffiliated line, the demo bar and an empty
+  `<main id="config-root">`. Nothing else (Phase 5).
+
+### Cut
+
+- None.
