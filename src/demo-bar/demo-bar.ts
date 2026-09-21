@@ -14,9 +14,9 @@ const DOCKED_CLEARANCE = 1120;
 export type DemoPage = 'graza' | 'maurten' | 'configuration';
 
 const LINKS: Array<{ id: DemoPage; label: string; href: string }> = [
-  { id: 'graza', label: 'Graza', href: '/' },
-  { id: 'maurten', label: 'Maurten', href: '/maurten' },
   { id: 'configuration', label: 'Configuration', href: '/configuration' },
+  { id: 'graza', label: 'Brand #1', href: '/' },
+  { id: 'maurten', label: 'Brand #2', href: '/maurten' },
 ];
 
 const CSS = `
