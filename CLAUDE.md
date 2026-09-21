@@ -8,8 +8,9 @@ because their tokens differ, never because the code forks. Same agent code for e
 ## Hard rules
 
 - Brand names (Graza, Maurten, Sizzle, Drizzle, Frizzle, Gel 100, ...) appear only as text in
-  `data`/fixtures and page copy. No logos, mascots, product photos, product art, or copied site
-  copy. Product tiles are flat colour blocks.
+  `data`/fixtures and page copy. No logos, mascots, product art, or copied site copy. Product tiles
+  are flat colour blocks. One real Graza product photo is allowed, in the Graza replica hero only
+  (`src/assets/graza-hero*.webp`, third-party, private exercise). No other brand photography anywhere.
 - Every page and `README.md` carry the line:
   "Unaffiliated design exercise. Prices, offers and product data are fictional."
 - Do NOT create, edit or scaffold `DECISIONS.md`. Greta writes it herself.

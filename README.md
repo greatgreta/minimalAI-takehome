@@ -71,8 +71,10 @@ docs/           graza-copy.md (verbatim source of the Graza script), screenshots
 - The agent is scripted. There is no LLM; `AgentBrain` is the interface an LLM brain would implement.
 - The configuration page is not built yet.
 - No backend. The postcode is checked in memory only and never stored or sent.
-- Stores are replicas with flat colour blocks instead of imagery; all product data is fictional and
-  every field is marked `verified: false`.
+- Stores are replicas with flat colour blocks instead of imagery, with one exception: the Graza hero
+  uses a real, third-party Graza product photo for this private exercise. One real Graza product photo
+  is allowed, in the Graza replica hero only. No other brand photography anywhere.
+- All product data is fictional and every field is marked `verified: false`.
 - Brand fonts are licensed, so self-hosted stand-ins are used (EB Garamond and DM Sans, Inter).
 
 Unaffiliated design exercise. Prices, offers and product data are fictional.
