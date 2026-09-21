@@ -45,3 +45,15 @@ describe('contrast guard', () => {
     expect(b).toBeGreaterThan(r);
   });
 });
+
+describe('contrast guard quantisation', () => {
+  it('a reported pass holds for the emitted 8-bit hex (regression: cyan accent)', () => {
+    const t = cloneTokens(neutral);
+    t.color.accent = '#31e1e1';
+    t.color.onAccent = '#FFFFFF';
+    const { tokens, report } = guardContrast(t);
+    const pair = report.find((r) => r.fg === 'onAccent')!;
+    expect(pair.passes).toBe(true);
+    expect(contrastHex(tokens.color.onAccent, tokens.color.accent)).toBeGreaterThanOrEqual(AA_TEXT);
+  });
+});
