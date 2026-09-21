@@ -288,3 +288,43 @@ quantised hex it will emit. Regression test added in `tests/contrast.test.ts`.
   design; only an elevation cue was added).
 - Docked launcher is still a flush tab rather than a bottom bar; generic "Agent" panel title.
 - `npm audit` findings in dev tooling; not addressed.
+
+---
+
+## Job 4 - Real Graza hero photo
+
+### What changed
+
+- The Graza replica hero now shows a real product photo instead of four flat bars. Source file:
+  `~/Downloads/trio-graza.webp` (the only file with "graza" in its name; 1296x1500, 120 KB; the original
+  is untouched). Copied to `src/assets/graza-hero.webp` (1296px wide, 122 KB, kept at native size since it
+  was already under the 1600px cap) plus `src/assets/graza-hero-800.webp` (800px wide, 52 KB). The `<img>`
+  uses `srcset` 800w/1296w, `sizes`, `width`/`height` attributes, and the alt text
+  "Graza Frizzle, Sizzle, Drizzle and spray olive oil bottles". A 375px phone downloads only the 52 KB file.
+- Rule change (Greta's instruction, this one asset only): CLAUDE.md and README.md now say "One real Graza
+  product photo is allowed, in the Graza replica hero only. No other brand photography anywhere."
+- The photo is **third-party** and used only for this private design exercise. It is not licensed for
+  anything else.
+- Untouched: swatches, title, price, delivery box, "Add to bag", tabs, "Meet the lineup", the Maurten
+  replica, agent code, tokens, copy, DECISIONS.md.
+
+### Decision points
+
+- **Hero box now follows the photo's aspect ratio (1296:1500).** I first did what was asked: contain the
+  image in the existing 520px box and match the box colour. Sampling showed the photo's backdrop is
+  mottled (corners `#C9C1BA`, `#9E948C`, `#E6E0D9`, left/right edges `#CFC8C0` / `#9A948C`), so no single
+  flat colour matches both sides. A flat colour and then a blurred copy of the photo both left a visible
+  seam. Making the box the photo's own shape removes the letterbox entirely (no seam, no crop, no layout
+  shift). Cost: the hero is taller at the same width (about 765px at 1440, 397px at 375; it was 520 and 300).
+  `#C4BBB3` (mean of the top strip) is only the placeholder while the image loads. Alternative if you want
+  the old height back: `object-fit: cover` with `object-position` near 49% works at 1440 but starts to
+  crop bottle tops on very wide screens.
+- **No allow-list in no-brand-leak.** That test only scans `src/agent` and `src/config`, so the asset in
+  `src/assets` and its use in `src/hosts` never trigger it.
+- Added `tests/graza-hero.spec.ts` (loads, alt and size attributes, no scroll, no overlap with title,
+  price or launcher, small file only at 375).
+
+### Assumptions
+
+- Vercel: I cannot confirm the deployment from here (no Vercel CLI, and the repo is private), so please
+  check it goes Ready.
