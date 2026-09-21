@@ -381,3 +381,14 @@ quantised hex it will emit. Regression test added in `tests/contrast.test.ts`.
 - "ask Maurent" was read as **Ask Maurten**.
 - Only the launcher was renamed; the panel title is still "Agent" in both brands.
 - README screenshots in `docs/screens/` were not retaken, so they still show the old labels.
+
+---
+
+## Fix - open panel bottom gap matches the launcher
+
+- The floating panel's bottom edge was `offset + 60px`, so it floated higher than the launcher it replaces.
+  It now uses the launcher's own offset (`--agent-offset-bottom`, default 16px): 16px at 1440 and 800.
+- Side effect: the lower panel touches the centred demo bar below about 1100px. The bar now hides while
+  any panel is open under 1120px wide (it already did this for the docked panel). The Graza layout test
+  now checks overlap only while the bar is visible, as the Maurten one already did.
+- Unchanged: at 480px and below the panel is still a full-width bottom sheet flush to the bottom edge.
