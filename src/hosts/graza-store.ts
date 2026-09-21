@@ -15,6 +15,8 @@ const HERO_W = 1296;
 const HERO_H = 1500;
 
 const CSS = `
+/* The page background matches the replica so the space reserved for the demo bar is not a white band. */
+body { background: #F6E6D9; }
 .gz { --cream: #F6E6D9; --paper: #FFF4EC; --olive: #3C422E; --lime: #D1E030; --lime-2: #B9C81E; --bottle: #2F3A22;
   background: var(--cream); color: var(--olive); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
 .gz * { box-sizing: border-box; }
@@ -52,7 +54,6 @@ const CSS = `
 .gz-pill { display: inline-block; padding: 6px 18px; border: 1px solid var(--olive); border-radius: 999px; font-size: 0.7rem; text-transform: uppercase; margin-bottom: 16px; }
 .gz-tile { aspect-ratio: 5 / 6; border-radius: 20px; margin-bottom: 14px; }
 .gz-col p { font-size: 0.85rem; line-height: 1.55; margin: 0; }
-.gz-foot { border-top: 1px solid var(--olive); background: var(--paper); padding: 24px 32px; text-align: center; font-size: 0.8rem; }
 @media (max-width: 800px) {
   .gz-head { padding: 12px 16px; flex-wrap: wrap; }
   .gz-nav { gap: 14px; order: 3; width: 100%; }
@@ -70,9 +71,9 @@ const TABS: Record<string, string> = {
   Details: `<h4>${c.sizzle.name}: ${c.sizzle.size}</h4><p>Everyday cooking oil, mellow and easy.</p>
     <h4>${c.drizzle.name}: ${c.drizzle.size}</h4><p>Finishing oil, made to be eaten raw.</p>
     <h4>${c.frizzle.name}: ${c.frizzle.size}</h4><p>Neutral, high-heat oil for the hot pan.</p>`,
-  Harvest: '<p>Placeholder harvest notes for this design exercise.</p>',
-  Uses: '<p>Placeholder usage notes for this design exercise.</p>',
-  Refills: '<p>Placeholder refill notes for this design exercise.</p>',
+  Harvest: '<p>Placeholder harvest notes.</p>',
+  Uses: '<p>Placeholder usage notes.</p>',
+  Refills: '<p>Placeholder refill notes.</p>',
 };
 
 export function renderGrazaStore(root: HTMLElement): void {
@@ -127,7 +128,6 @@ export function renderGrazaStore(root: HTMLElement): void {
         </div>
       </section>
     </main>
-    <footer class="gz-foot">Unaffiliated design exercise. Prices, offers and product data are fictional.</footer>
   </div>`;
 
   const count = root.querySelector<HTMLElement>('[data-bag]')!;

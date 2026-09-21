@@ -27,7 +27,6 @@ const CSS = `
 .mt-block.link { background: transparent; border: 1px solid #E6E6E6; display: grid; place-items: center; color: #767676; }
 .mt-meta { padding: 0 8px 10px; font-size: 11px; line-height: 1.35; }
 .mt-meta span { display: block; color: #767676; }
-.mt-foot { border-top: 1px solid #E6E6E6; padding: 16px; font-size: 12px; color: #767676; }
 @media (max-width: 900px) { .mt-grid { grid-template-columns: repeat(3, 1fr); } .mt-intro { grid-template-columns: 1fr; } }
 @media (max-width: 640px) {
   .mt-head { grid-template-columns: 1fr auto; }
@@ -59,7 +58,6 @@ export function renderMaurtenStore(root: HTMLElement): void {
       <nav class="mt-filters" aria-label="Filter"><a class="on" href="#">All</a><a href="#">Gels</a><a href="#">Drink Mixes</a><a href="#">Solids</a><a href="#">Bicarb</a></nav>
       <section class="mt-grid">${maurtenProducts.map(tile).join('')}</section>
     </main>
-    <footer class="mt-foot">Unaffiliated design exercise. Prices, offers and product data are fictional.</footer>
   </div>`;
 
   const count = root.querySelector<HTMLElement>('[data-bag]')!;
