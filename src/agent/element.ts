@@ -382,11 +382,12 @@ export class MinimalAgent extends HTMLElement {
   }
 
   #renderStrip(): void {
-    if (this.#tokens.behaviour.understanding !== 'strip') {
+    // The strip only exists once there is context to show.
+    if (this.#tokens.behaviour.understanding !== 'strip' || this.#constraints.length === 0) {
       this.#stripHost.replaceChildren();
       return;
     }
-    this.#stripHost.replaceChildren(ConstraintStrip('Context', 'Nothing yet', this.#constraints));
+    this.#stripHost.replaceChildren(ConstraintStrip('Context', this.#constraints));
   }
 
   #renderComposer(): void {

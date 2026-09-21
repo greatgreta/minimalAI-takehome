@@ -64,15 +64,11 @@ export function ConstraintChips(lead: string, parsed: Constraint[]): HTMLElement
 }
 
 /** Strip understanding: a context strip that sits above the composer. */
-export function ConstraintStrip(label: string, empty: string, parsed: Constraint[]): HTMLElement {
+export function ConstraintStrip(label: string, parsed: Constraint[]): HTMLElement {
   const strip = el('div', 'strip');
   strip.setAttribute('aria-label', label);
   strip.append(el('span', 'strip-label', label));
-  if (parsed.length === 0) {
-    strip.append(el('span', 'strip-label', empty));
-  } else {
-    for (const c of parsed) strip.append(Chip(constraintText(c)));
-  }
+  for (const c of parsed) strip.append(Chip(constraintText(c)));
   return strip;
 }
 

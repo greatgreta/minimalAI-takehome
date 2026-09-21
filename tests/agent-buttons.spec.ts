@@ -86,7 +86,11 @@ for (const [vpName, viewport] of Object.entries(VIEWPORTS)) {
         }
       });
       await agent(page, '.launcher').click();
+      // No context yet, so no "Context / Nothing yet" strip; it appears once the shopper has context.
+      await expect(agent(page, '.strip')).toHaveCount(0);
+      await expect(agent(page, '.title')).toHaveText('Ask Maurten');
       await send(page);
+      await expect(agent(page, '.strip')).toBeVisible();
       await tap(page, 'No');
       await send(page); // postcode
       await tap(page, 'Add to cart');
