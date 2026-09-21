@@ -3,9 +3,10 @@
 // mounts the neutral default.
 
 import './element';
+import { readMountConfig } from './mount-config';
 
 const script = document.currentScript as HTMLScriptElement | null;
-const config = script?.dataset.config;
+const config = readMountConfig(script, window as unknown as Record<string, unknown>);
 
 function mount(): void {
   if (document.querySelector('minimal-agent')) return; // idempotent

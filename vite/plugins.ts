@@ -1,5 +1,6 @@
 import type { Plugin, Connect } from 'vite';
 import '../src/brands/register';
+import { CONFIG_HANDOFF } from '../src/agent/mount-config';
 import { buildSnippet, defaultConfig } from '../src/config/codec';
 
 /**
@@ -30,9 +31,12 @@ function devAgentMiddleware(): Connect.NextHandleFunction {
     const path = req.url.split('?')[0];
     if (path === '/agent.js') {
       res.setHeader('Content-Type', 'application/javascript');
-      // A classic script cannot use `import`, so inject a module script pointing at source.
+      // A classic script cannot use `import`, so inject a module script pointing at source. The
+      // snippet's data-config is handed over on a window global (modules have no currentScript).
       res.end(
-        `var s=document.createElement('script');s.type='module';` +
+        `var c=document.currentScript&&document.currentScript.dataset.config;` +
+          `if(c)window.${CONFIG_HANDOFF}=c;` +
+          `var s=document.createElement('script');s.type='module';` +
           `s.src='/src/agent/agent-entry.ts';document.head.appendChild(s);`,
       );
       return;
