@@ -1,6 +1,6 @@
 # Minimal AI take-home
 
-Unaffiliated design exercise. Prices, offers and product data are fictional.
+Unaffiliated design exercise. Brand names and product data are used for a private take-home. Prices, offers and product data are fictional.
 
 ![Graza replica with the agent open](docs/screens/home-graza.png)
 ![Maurten replica with the agent open](docs/screens/home-maurten.png)
@@ -41,7 +41,7 @@ is not read there. Use `npm run build && npm run preview` to see exact merchant 
 
 ## Configuration page
 
-`/configuration` is an empty page (demo bar, the unaffiliated line, and `<main id="config-root">`).
+`/configuration` is an empty page (demo bar and `<main id="config-root">`).
 The logic it will drive already exists, tested and UI-free:
 
 - `src/config/codec.ts`: `AgentConfig`, `encodeConfig` / `decodeConfig`, `resolveTokens`,
@@ -76,5 +76,3 @@ docs/           graza-copy.md (verbatim source of the Graza script), screenshots
   is allowed, in the Graza replica hero only. No other brand photography anywhere.
 - All product data is fictional and every field is marked `verified: false`.
 - Brand fonts are licensed, so self-hosted stand-ins are used (EB Garamond and DM Sans, Inter).
-
-Unaffiliated design exercise. Prices, offers and product data are fictional.

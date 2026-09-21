@@ -1,7 +1,5 @@
 # Minimal AI take-home - working rules
 
-Unaffiliated design exercise. Prices, offers and product data are fictional.
-
 Thesis: **styled vs built**. Two brands (Graza, Maurten) look AND behave differently
 because their tokens differ, never because the code forks. Same agent code for every brand.
 
@@ -11,8 +9,6 @@ because their tokens differ, never because the code forks. Same agent code for e
   `data`/fixtures and page copy. No logos, mascots, product art, or copied site copy. Product tiles
   are flat colour blocks. One real Graza product photo is allowed, in the Graza replica hero only
   (`src/assets/graza-hero*.webp`, third-party, private exercise). No other brand photography anywhere.
-- Every page and `README.md` carry the line:
-  "Unaffiliated design exercise. Prices, offers and product data are fictional."
 - Do NOT create, edit or scaffold `DECISIONS.md`. Greta writes it herself.
 - No brand value (hex, px radius, font name, brand name) inside `src/agent` or `src/config`.
   Values live only in `src/brands/*.ts` and tokens code. A test enforces this.
