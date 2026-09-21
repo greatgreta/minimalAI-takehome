@@ -22,6 +22,7 @@
   --cfg-chip-ink: #9a4040;
   --cfg-dot-line: #dfdbd8;
   --cfg-highlight: #fff3c9;
+  --cfg-timeline: #c8c8c8;
 
   /* ABC Areal tracking measured against the design: 16px and 20px copy runs about +0.42px wider, the 30px title -0.69px narrower */
   --cfg-track-text: 0.42px;
@@ -68,11 +69,16 @@ body.cfg-page { margin: 0; padding-bottom: 0; background: var(--cfg-bg); color: 
 .cfg-reset { position: absolute; right: 51px; top: 200px; padding: 0; border: 0; background: none; color: var(--cfg-muted); font: 400 12px/14px var(--cfg-font); text-decoration: underline; cursor: pointer; }
 .cfg-reset:focus-visible { outline: 2px solid var(--cfg-ink); outline-offset: 2px; }
 
-/* reading steps: one row across the empty band of card 1 */
-.cfg-steps { display: flex; flex-wrap: wrap; gap: 8px 28px; margin: 34px 0 0; padding: 0; list-style: none; }
-.cfg-step { display: flex; align-items: center; gap: 8px; font-size: 13px; line-height: 16px; color: var(--cfg-muted); }
+/* reading steps: a vertical timeline in the left bottom card */
+.cfg-steps { margin: 0; padding: 24px; list-style: none; transition: opacity 200ms ease; }
+.cfg-steps.is-fading { opacity: 0; }
+.cfg-step { position: relative; display: flex; align-items: center; gap: 12px; padding-bottom: 24px; font-size: 14px; line-height: 18px; color: var(--cfg-muted); }
+.cfg-step:last-child { padding-bottom: 0; }
+/* dotted connector, centred on the 18px icon column */
+.cfg-step:not(:last-child)::after { content: ''; position: absolute; left: 8.5px; top: 22px; bottom: 4px; border-left: 1px dotted var(--cfg-timeline); }
 .cfg-step.is-done { color: var(--cfg-ink); }
-.cfg-step-icon { display: inline-flex; }
+.cfg-step-icon { display: inline-flex; flex: none; color: var(--cfg-muted); }
+.cfg-step.is-done .cfg-step-icon { color: var(--cfg-ink); }
 
 /* ---------- bottom widgets ---------- */
 .cfg-row { display: grid; grid-template-columns: 1fr 1fr; gap: 23px; margin: 35px 0 0 -1px; }
@@ -134,4 +140,5 @@ body.cfg-page { margin: 0; padding-bottom: 0; background: var(--cfg-bg); color: 
 
 @media (prefers-reduced-motion: reduce) {
   .cfg-table tr.is-new td, .cfg-typing span { animation: none; }
+  .cfg-steps { transition: none; }
 }

@@ -35,6 +35,7 @@ const STEP_MS = 600;
 const ROW_MS = 120;
 const TYPING_MS = 600;
 const COPIED_MS = 2000;
+const FADE_MS = 200;
 
 /** One cancellable clock: after reset() nothing scheduled earlier can run or resume. */
 class Clock {
@@ -107,7 +108,6 @@ async function main(): Promise<void> {
     form,
     el('p', 'cfg-helper', 'We only look at what any visitor can see. Nothing on your site changes until you add the code yourself.'),
     resetBtn,
-    steps,
   );
 
   const row = el('div', 'cfg-row');
@@ -156,21 +156,26 @@ async function main(): Promise<void> {
       li.append(icon, el('span', undefined, label));
       return { li, icon };
     });
+    // Both bottom cards grow now so the list fits; the steps live in the left card until the table replaces them.
+    row.classList.add('is-open');
+    steps.classList.remove('is-fading');
     steps.replaceChildren(...items.map((i) => i.li));
+    left.replaceChildren(steps);
 
     for (const it of items) {
       await clock.wait(STEP_MS);
       it.li.classList.add('is-done');
       it.icon.innerHTML = tickIcon;
     }
-
     await clock.wait(STEP_MS / 2);
-    steps.replaceChildren(); // the band is empty again once the reading is done
+    steps.classList.add('is-fading'); // fades out (instantly with reduced motion), then the table takes its place
+    await clock.wait(matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : FADE_MS);
+    steps.replaceChildren();
+
     state = finishReading(state);
     readBtn.textContent = 'Read my store';
 
-    // The table card and the chat card open together; the composer appears with the table.
-    row.classList.add('is-open');
+    // The composer appears with the table.
     const wrap = el('div', 'cfg-table-wrap');
     wrap.append(table.el);
     left.replaceChildren(wrap);

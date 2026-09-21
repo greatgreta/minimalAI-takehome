@@ -22,10 +22,14 @@ export const arrowIcon = svg(
   '<path d="M7 11.5V2.5M3 6.5l4-4 4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>',
 );
 
-export const tickIcon = svg(
-  14,
-  14,
+// Step icons: drawn on a 14 unit grid, shown at 18px.
+const step = (body: string) =>
+  `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 14 14" fill="none" aria-hidden="true" focusable="false">${body}</svg>`;
+
+/** Done: circle with a check. */
+export const tickIcon = step(
   '<circle cx="7" cy="7" r="6.25" stroke="currentColor" stroke-width="1"/><path d="M4.2 7.2l2 2 3.6-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>',
 );
 
-export const pendingIcon = svg(14, 14, '<circle cx="7" cy="7" r="6.25" stroke="currentColor" stroke-width="1" stroke-dasharray="2 2"/>');
+/** Pending: the same circle, hollow. */
+export const pendingIcon = step('<circle cx="7" cy="7" r="6.25" stroke="currentColor" stroke-width="1"/>');
