@@ -246,3 +246,45 @@ quantised hex it will emit. Regression test added in `tests/contrast.test.ts`.
 ### Cut
 
 - None.
+
+---
+
+## Follow-up jobs (install fix, review walkthrough, fixes)
+
+### Decision points
+
+- **Install failure cause.** `npm error Invalid Version` came from `package-lock.json`: two nested optional
+  platform packages (`@esbuild/win32-ia32`, `@rollup/rollup-openharmony-arm64`) had no `version` or
+  `resolved`. They were written while my local npm cache was unreadable (EACCES/EEXIST under
+  `~/.npm/_cacache`), so plain regeneration reproduced them. Fixed by regenerating with a throwaway
+  `--cache`. `package.json` itself had no `packageManager`, `devEngines`, `overrides`, bad versions, and
+  there is no `.npmrc`. Added `engines: {"node": ">=20"}`. Note: the first commit (6b5e285) did not fix it;
+  the second (7ec016a) did. Your `~/.npm` cache has root-owned files; `sudo chown -R $(id -u):$(id -g)
+  ~/.npm` would fix that (I did not run it).
+- **Side branches for "Get the trio".** A `Script.branches` map plays a reply without advancing the main
+  path, so the verbatim Graza copy and its snapshot are untouched. A branch's controls are standalone
+  (no reply id), so "Add the trio" always dispatches `agent:add-to-cart {productId:'trio'}`.
+- **Stale controls are hidden, not disabled.** Each rendered control records the step that will answer it;
+  once the script is past that step it is removed. Unscripted siblings of a pending choice stay visible
+  (dashed) so the demo stays honest about what is scripted.
+- **New events:** `agent:open` now carries `{placement}` and a new `agent:expand {expanded}` event exists,
+  both so the demo bar can step aside. The demo bar also hides for a docked panel below 1120px wide
+  (spec said 480px); a docked panel sits flush to the bottom edge, so it would otherwise overlap the bar.
+- **Elevation from tokens.** `box-shadow` uses `color-mix` on `--agent-ink`, so no brand value entered
+  `src/agent`. The no-brand-leak test still passes.
+- **Dev loader** hands `data-config` over on `window.__minimalAgentConfig`; the production IIFE still reads
+  `document.currentScript`.
+
+### Assumptions
+
+- **Copy I wrote, not Greta's:** the reply to "Get the trio" is `The trio: {sizzle.name}, {drizzle.name},
+  {frizzle.name}, {trio.price} EUR.` and the button label is `Add the trio`. Built only from data.
+- The user echo for the branch is the option's own label ("Get the trio").
+- Untouched: Maurten copy, the rest of the Graza copy, DECISIONS.md, the configuration page UI.
+
+### Not fixed
+
+- Graza launcher at 375 still floats over the page's "Add to bag" (a fixed widget covers content by
+  design; only an elevation cue was added).
+- Docked launcher is still a flush tab rather than a bottom bar; generic "Agent" panel title.
+- `npm audit` findings in dev tooling; not addressed.
