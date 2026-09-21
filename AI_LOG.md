@@ -179,3 +179,17 @@ choice, what was chosen, and the alternative), plus any "Assumptions" and "Cut" 
 ### Cut
 
 - None.
+
+---
+
+## Phase 5 - Configuration page stub
+
+Done as part of Phase 4 (page stub) plus the README section above. No controls, sliders or preview were designed.
+
+### Decision points
+
+- None beyond keeping the page strictly empty.
+
+### Cut
+
+- None.
