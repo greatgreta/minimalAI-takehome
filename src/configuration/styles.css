@@ -9,7 +9,9 @@
   --cfg-line: #e7e7e7;
   --cfg-ink: #000000;
   --cfg-muted: #767676;
-  --cfg-button: #767676;
+  --cfg-button: #767676; /* inactive */
+  --cfg-button-active: #000000;
+  --cfg-button-hover: #262626;
   --cfg-on-button: #ffffff;
   --cfg-bubble: #f0f0ef;
 
@@ -51,18 +53,19 @@ body.cfg-page { margin: 0; padding-bottom: 0; background: var(--cfg-bg); color: 
 
 /* ---------- cards ---------- */
 .cfg-card { background: var(--cfg-bg); border: 1px solid var(--cfg-line); border-radius: var(--cfg-radius-card); }
-.cfg-read { position: relative; height: 307px; margin-top: 31px; padding: 34px 104px 0; background: var(--cfg-panel); }
+.cfg-read { position: relative; height: 307px; margin-top: 31px; padding: 34px 51px 0; background: var(--cfg-panel); }
 .cfg-card-title { margin: 0; font-size: 20px; line-height: 26px; font-weight: 400; letter-spacing: var(--cfg-track-text); }
 .cfg-card-body { margin: 9px 0 0; font-size: 16px; line-height: 22px; letter-spacing: var(--cfg-track-text); color: var(--cfg-muted); }
 .cfg-form { display: flex; gap: 12px; margin-top: 40px; }
 .cfg-input { flex: 1; min-width: 0; height: 40px; padding: 0 16px; border: 1px solid var(--cfg-line); border-radius: var(--cfg-radius-field); background: var(--cfg-bg); color: var(--cfg-ink); font: 400 13px/1 var(--cfg-font); }
 .cfg-input::placeholder { font-style: italic; color: var(--cfg-muted); opacity: 1; }
 .cfg-input:focus-visible { outline: 2px solid var(--cfg-ink); outline-offset: 2px; }
-.cfg-read-btn { flex: none; width: 132px; height: 40px; border: 0; border-radius: var(--cfg-radius-field); background: var(--cfg-button); color: var(--cfg-on-button); font: 500 13px/1 var(--cfg-font); text-transform: uppercase; cursor: pointer; }
-.cfg-read-btn:disabled { cursor: default; }
+.cfg-read-btn { flex: none; width: 132px; height: 40px; border: 0; border-radius: var(--cfg-radius-field); background: var(--cfg-button-active); color: var(--cfg-on-button); font: 500 13px/1 var(--cfg-font); text-transform: uppercase; cursor: pointer; }
+.cfg-read-btn:hover:not(:disabled) { background: var(--cfg-button-hover); }
+.cfg-read-btn:disabled { background: var(--cfg-button); cursor: default; } /* reading, and after the store has been read, until Reset */
 .cfg-read-btn:focus-visible { outline: 2px solid var(--cfg-ink); outline-offset: 2px; }
 .cfg-helper { margin: 7px 0 0; font-size: 11px; line-height: 14px; color: var(--cfg-muted); }
-.cfg-reset { position: absolute; right: 104px; top: 200px; padding: 0; border: 0; background: none; color: var(--cfg-muted); font: 400 12px/14px var(--cfg-font); text-decoration: underline; cursor: pointer; }
+.cfg-reset { position: absolute; right: 51px; top: 200px; padding: 0; border: 0; background: none; color: var(--cfg-muted); font: 400 12px/14px var(--cfg-font); text-decoration: underline; cursor: pointer; }
 .cfg-reset:focus-visible { outline: 2px solid var(--cfg-ink); outline-offset: 2px; }
 
 /* reading steps: one row across the empty band of card 1 */
