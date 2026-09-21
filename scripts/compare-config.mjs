@@ -1,3 +1,4 @@
+// Compares against the original Figma references in _reference/ (git-ignored). The page has changed on purpose since, so the numbers are historical.
 // One pixel comparison of /configuration against the Figma references in _reference/ (git-ignored),
 // at 1440x1024, with the demo bar hidden (the design has none). Writes docs/screens/
 // configuration-compare.png (reference | ours | difference) and prints a report.
