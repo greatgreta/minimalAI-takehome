@@ -1,0 +1,18 @@
+[
+  {
+    "where": "graza-desktop",
+    "what": "\"Get the trio\" is disabled, looks broken"
+  },
+  {
+    "where": "graza-desktop",
+    "what": "console errors: Failed to load resource: the server responded with a status of 404 (Not Found)"
+  },
+  {
+    "where": "graza-375",
+    "what": "\"Get the trio\" is disabled, looks broken"
+  },
+  {
+    "where": "maurten-desktop-09-expanded",
+    "what": "panel overlaps demo bar"
+  }
+]
