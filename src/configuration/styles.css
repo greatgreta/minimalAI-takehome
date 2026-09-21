@@ -1,0 +1,134 @@
+/* Configuration page. Every value is a --cfg-* custom property so look and feel can be changed here. */
+:root {
+  --cfg-font: 'ABC Areal', 'Inter', system-ui, sans-serif;
+  --cfg-serif: 'Source Serif 4', Georgia, serif;
+  --cfg-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --cfg-bg: #ffffff;
+  --cfg-panel: #fafafa;
+  --cfg-line: #e7e7e7;
+  --cfg-ink: #000000;
+  --cfg-muted: #767676;
+  --cfg-button: #767676;
+  --cfg-on-button: #ffffff;
+  --cfg-bubble: #f0f0ef;
+
+  --cfg-table-head: #f0f0ef;
+  --cfg-table-line: #ececeb;
+  --cfg-table-bg: #fcfcfb;
+  --cfg-chip-bg: #f0f0ef;
+  --cfg-chip-ink: #9a4040;
+  --cfg-dot-line: #dfdbd8;
+  --cfg-highlight: #fff3c9;
+
+  /* ABC Areal tracking measured against the design: 16px and 20px copy runs about +0.42px wider, the 30px title -0.69px narrower */
+  --cfg-track-text: 0.42px;
+  --cfg-track-title: -0.69px;
+
+  --cfg-radius-card: 20px;
+  --cfg-radius-field: 10px;
+  --cfg-radius-composer: 16px;
+  --cfg-rail: 57px;
+  --cfg-content: 1162px;
+}
+
+[hidden] { display: none !important; }
+body.cfg-page { margin: 0; padding-bottom: 0; background: var(--cfg-bg); color: var(--cfg-ink); font-family: var(--cfg-font); }
+.cfg-page * { box-sizing: border-box; }
+
+/* ---------- shell: rail and top bar ---------- */
+.cfg { display: flex; min-height: 100vh; }
+.cfg-rail { position: sticky; top: 0; align-self: flex-start; flex: none; width: var(--cfg-rail); height: 100vh; background: var(--cfg-panel); border-right: 2px solid var(--cfg-line); color: var(--cfg-muted); }
+.cfg-rail svg { position: absolute; left: 19px; }
+.cfg-main { flex: 1; min-width: 0; }
+.cfg-top { height: 57px; border-bottom: 2px solid var(--cfg-line); background: var(--cfg-bg); }
+.cfg-content { position: relative; left: -0.5px; /* the 1383px column centres on a half pixel; the design sits on 167 */ max-width: var(--cfg-content); margin: 0 auto; padding: 84px 0 112px; }
+
+/* ---------- heading ---------- */
+.cfg-head { padding-left: 8px; }
+.cfg-title { margin: 0; font-size: 30px; line-height: 36px; font-weight: 400; letter-spacing: var(--cfg-track-title); }
+.cfg-sub { margin: 9px 0 0; max-width: 430px; font-size: 16px; line-height: 22px; letter-spacing: var(--cfg-track-text); color: var(--cfg-muted); }
+
+/* ---------- cards ---------- */
+.cfg-card { background: var(--cfg-bg); border: 1px solid var(--cfg-line); border-radius: var(--cfg-radius-card); }
+.cfg-read { position: relative; height: 307px; margin-top: 31px; padding: 34px 104px 0; background: var(--cfg-panel); }
+.cfg-card-title { margin: 0; font-size: 20px; line-height: 26px; font-weight: 400; letter-spacing: var(--cfg-track-text); }
+.cfg-card-body { margin: 9px 0 0; font-size: 16px; line-height: 22px; letter-spacing: var(--cfg-track-text); color: var(--cfg-muted); }
+.cfg-form { display: flex; gap: 12px; margin-top: 40px; }
+.cfg-input { flex: 1; min-width: 0; height: 40px; padding: 0 16px; border: 1px solid var(--cfg-line); border-radius: var(--cfg-radius-field); background: var(--cfg-bg); color: var(--cfg-ink); font: 400 13px/1 var(--cfg-font); }
+.cfg-input::placeholder { font-style: italic; color: var(--cfg-muted); opacity: 1; }
+.cfg-input:focus-visible { outline: 2px solid var(--cfg-ink); outline-offset: 2px; }
+.cfg-read-btn { flex: none; width: 132px; height: 40px; border: 0; border-radius: var(--cfg-radius-field); background: var(--cfg-button); color: var(--cfg-on-button); font: 500 13px/1 var(--cfg-font); text-transform: uppercase; cursor: pointer; }
+.cfg-read-btn:disabled { cursor: default; }
+.cfg-read-btn:focus-visible { outline: 2px solid var(--cfg-ink); outline-offset: 2px; }
+.cfg-helper { margin: 7px 0 0; font-size: 11px; line-height: 14px; color: var(--cfg-muted); }
+.cfg-reset { position: absolute; right: 104px; top: 200px; padding: 0; border: 0; background: none; color: var(--cfg-muted); font: 400 12px/14px var(--cfg-font); text-decoration: underline; cursor: pointer; }
+.cfg-reset:focus-visible { outline: 2px solid var(--cfg-ink); outline-offset: 2px; }
+
+/* reading steps: one row across the empty band of card 1 */
+.cfg-steps { display: flex; flex-wrap: wrap; gap: 8px 28px; margin: 34px 0 0; padding: 0; list-style: none; }
+.cfg-step { display: flex; align-items: center; gap: 8px; font-size: 13px; line-height: 16px; color: var(--cfg-muted); }
+.cfg-step.is-done { color: var(--cfg-ink); }
+.cfg-step-icon { display: inline-flex; }
+
+/* ---------- bottom widgets ---------- */
+.cfg-row { display: grid; grid-template-columns: 1fr 1fr; gap: 23px; margin: 35px 0 0 -1px; }
+.cfg-widget { position: relative; height: 185px; overflow: hidden; }
+.cfg-row.is-open .cfg-widget { height: 379px; }
+.cfg-ghost { position: absolute; inset: 0; display: grid; place-items: center; margin: 0; font-size: 14px; color: #b0b0b0; }
+.cfg-widget--table { overflow: auto; }
+
+/* token table: styled like a table in a chat */
+.cfg-table-wrap { padding-top: 77px; padding-bottom: 24px; }
+.cfg-table { width: 453px; max-width: calc(100% - 24px); margin: 0 auto; border-collapse: separate; border-spacing: 0; border: 1px solid var(--cfg-table-line); border-radius: 6px; background: var(--cfg-table-bg); font: 400 12px/15px var(--cfg-serif); color: #252525; overflow: hidden; }
+.cfg-table th { padding: 3px 8px; background: var(--cfg-table-head); font-weight: 600; text-align: left; border-bottom: 1px solid var(--cfg-table-line); }
+.cfg-table th:first-child { width: 133px; }
+.cfg-table td { padding: 4px 8px; vertical-align: top; border-bottom: 1px solid var(--cfg-table-line); }
+.cfg-table tr:last-child td { border-bottom: 0; }
+.cfg-dot { display: inline-block; width: 10px; height: 10px; margin-right: 4px; border: 1px solid var(--cfg-dot-line); border-radius: 50%; vertical-align: -1px; }
+.cfg-chip { padding: 1px 4px; border-radius: 4px; background: var(--cfg-chip-bg); color: var(--cfg-chip-ink); font: 400 11px/1 var(--cfg-mono); }
+.cfg-table tr.is-new td { animation: cfg-flash 800ms ease-out; }
+@keyframes cfg-flash { from { background: var(--cfg-highlight); } to { background: transparent; } }
+
+/* ---------- chat ---------- */
+.cfg-widget--chat { padding: 0; }
+.cfg-chat { display: flex; flex-direction: column; height: 100%; }
+.cfg-chat-log { flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; padding: 24px 24px 12px; }
+.cfg-msg { font-size: 15px; line-height: 22px; overflow-wrap: anywhere; }
+.cfg-msg--user { align-self: flex-end; max-width: 80%; padding: 8px 14px; border-radius: 16px; background: var(--cfg-bubble); }
+.cfg-typing { display: flex; gap: 4px; padding: 8px 0; }
+.cfg-typing span { width: 6px; height: 6px; border-radius: 50%; background: var(--cfg-muted); animation: cfg-dots 1s infinite ease-in-out; }
+.cfg-typing span:nth-child(2) { animation-delay: 0.15s; }
+.cfg-typing span:nth-child(3) { animation-delay: 0.3s; }
+@keyframes cfg-dots { 0%, 80%, 100% { opacity: 0.25; } 40% { opacity: 1; } }
+
+.cfg-composer { flex: none; display: flex; flex-direction: column; height: 77px; margin: 0 6px 4px 4px; border: 1px solid var(--cfg-line); border-radius: var(--cfg-radius-composer); background: var(--cfg-bg); }
+.cfg-composer input { flex: 1; min-height: 0; width: 100%; padding: 14px 15px 0; border: 0; background: none; color: var(--cfg-ink); font: 400 13px/16px var(--cfg-font); }
+.cfg-composer input::placeholder { font-style: italic; color: var(--cfg-muted); opacity: 1; }
+.cfg-composer input:focus { outline: none; }
+.cfg-composer-row { display: flex; justify-content: space-between; align-items: center; height: 34px; padding: 0 16px 6px 17px; color: var(--cfg-muted); }
+.cfg-composer-icon { display: inline-flex; }
+.cfg-send { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; margin-right: -4px; padding: 0; border: 0; border-radius: 50%; background: var(--cfg-button); color: var(--cfg-on-button); cursor: pointer; }
+.cfg-send:focus-visible { outline: 2px solid var(--cfg-ink); outline-offset: 2px; }
+
+.cfg-snippet { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+.cfg-code { align-self: stretch; margin: 0; max-height: 120px; overflow: auto; padding: 10px 12px; border: 1px solid var(--cfg-line); border-radius: var(--cfg-radius-field); background: var(--cfg-panel); font: 400 12px/18px var(--cfg-mono); white-space: pre-wrap; overflow-wrap: anywhere; }
+.cfg-copy { height: 32px; padding: 0 14px; border: 1px solid var(--cfg-line); border-radius: var(--cfg-radius-field); background: var(--cfg-bg); color: var(--cfg-ink); font: 500 13px/1 var(--cfg-font); cursor: pointer; }
+.cfg-copy:focus-visible, .cfg-code:focus-visible { outline: 2px solid var(--cfg-ink); outline-offset: 2px; }
+.cfg-note { margin: 0; font-size: 13px; line-height: 18px; color: var(--cfg-muted); }
+
+/* ---------- narrow screens ---------- */
+@media (max-width: 999px) {
+  .cfg-rail { display: none; }
+  .cfg-content { padding: 40px 16px 112px; }
+  .cfg-read { height: auto; padding: 28px 20px 24px; }
+  .cfg-form { flex-wrap: wrap; }
+  .cfg-input { flex-basis: 100%; }
+  .cfg-reset { position: static; display: block; margin: 8px 0 0 auto; }
+  .cfg-row { grid-template-columns: 1fr; margin-left: 0; }
+  .cfg-table-wrap { padding-top: 24px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cfg-table tr.is-new td, .cfg-typing span { animation: none; }
+}
