@@ -118,6 +118,8 @@ async function run(browser, store, vpName) {
       const dis = (await trio.first().getAttribute('aria-disabled')) === 'true';
       if (dis) note(`${store}-${vpName}`, '"Get the trio" is disabled, looks broken');
     }
+    await tap('Get the trio', 'get-the-trio');
+    await tap('Add the trio', 'add-the-trio');
     await tap('Just Drizzle', 'just-drizzle');
     await tap('Yes', 'first-order-yes-final');
   } else {
