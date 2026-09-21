@@ -31,6 +31,17 @@ Scaffold in progress - see `AI_LOG.md` for phase-by-phase decisions.
 The token pipeline, sliders, contrast guard, config codec and `buildSnippet` are built and tested
 without a UI, so the configuration page can be wired to them later.
 
+## Configuration page
+
+`/configuration` is an empty page (demo bar, the unaffiliated line, and `<main id="config-root">`).
+The logic it will drive already exists, tested and UI-free:
+
+- `src/config/codec.ts`: `AgentConfig`, `encodeConfig` / `decodeConfig`, `resolveTokens`,
+  `buildSnippet(config, origin)`
+- `src/tokens/sliders.ts`: `applyEnergy`, `applyShape`
+- `src/tokens/contrast.ts`: `guardContrast` (returns tokens plus a per-pair report)
+- `<minimal-agent config="...">` re-resolves live when its `config` attribute changes
+
 ## Structure
 
 ```
