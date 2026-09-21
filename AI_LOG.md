@@ -514,3 +514,39 @@ off-white frame, mine is the bare table); the typing dots visible at the capture
 - `@fontsource/source-serif-4` was installed with a throwaway npm cache (`~/.npm` has root-owned files) and the
   lockfile has no versionless entries.
 - Fonts were committed as instructed.
+
+---
+
+## Job 8 - /configuration refinements
+
+### What changed
+
+- Card 1 content inset halved to 52px each side; the input flexes, the button stays 132px.
+- READ MY STORE is black (`#000`) when active, `#767676` while reading and after the read (disabled until
+  Reset), with a `#262626` hover and the existing focus ring. Reset link unchanged.
+- The four reading steps moved from card 1 into the left bottom card as a vertical timeline (24px padding,
+  18px circle icons, hollow grey ring while pending, check and black text when done, 1px dotted `#C8C8C8`
+  connector). Both bottom cards grow to 379px when the reading starts; when the last step finishes the list
+  fades out (200ms, none with reduced motion) and the table takes its place. Reset clears them.
+- Table: ABC Areal everywhere (hex chips included), 13px rows, header `#FAFAFA`, white body rows, fills its
+  widget inside 24px padding. `@fontsource/source-serif-4` uninstalled with a throwaway npm cache.
+- Send button: `#000` 28px circle, exact 16x16 arrow, focus ring and aria-label kept.
+- Chat scroll area: 16px padding above and below, last line pinned above the composer, soft 16px edge fade.
+
+### Decision points
+
+- **"Semibold" header:** ABC Areal ships Regular, Medium and Bold only, so the header uses Medium (500);
+  600 would render as Bold.
+- **Chat clipping:** I could not reproduce the exact clipping in my Chrome before the fix (the earlier
+  screenshots looked fine), so the fix targets the likely causes: content growing after the scroll (font swap,
+  card growth, resize) and lines sliced by the scroll edge. A ResizeObserver keeps the reader pinned to the
+  bottom while they are at the bottom, and the edges fade. The Playwright check asserts the last item has at
+  least 15px of clear space above the composer after each question and after the final message, at 1440 and
+  1000 wide. I cannot test your exact browser (your screenshot is from Arc).
+- The `--cfg-mono` monospace stays for the code box only.
+- `scripts/compare-config.mjs` still compares against the original Figma references; those now differ on
+  purpose (steps, table, button, inset), so its numbers are no longer meaningful for this page.
+
+### Assumptions
+
+- Left card content is top-left aligned inside 24px padding (the table too), not vertically centred.
