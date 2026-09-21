@@ -1,11 +1,18 @@
 // Graza store replica: a product-page layout (The Trio) built from the reference's structure,
-// type scale, spacing and colour system. Wordmark is plain text and imagery is flat colour blocks.
+// type scale, spacing and colour system. Wordmark is plain text; imagery is flat colour blocks, except
+// the one real product photo in the hero (third-party, allowed for this private exercise only).
 // Brand values are allowed in this file (replica styling); the agent knows nothing about them.
 
 import '@fontsource/eb-garamond/latin-500.css';
 import '@fontsource/dm-sans/latin-400.css';
 import '@fontsource/dm-sans/latin-600.css';
 import { grazaCatalogue as c } from '../catalogue/graza';
+import heroLarge from '../assets/graza-hero.webp';
+import heroSmall from '../assets/graza-hero-800.webp';
+
+// Intrinsic size of the large variant, so the browser reserves the space before it loads.
+const HERO_W = 1296;
+const HERO_H = 1500;
 
 const CSS = `
 .gz { --cream: #F6E6D9; --paper: #FFF4EC; --olive: #3C422E; --lime: #D1E030; --lime-2: #B9C81E; --bottle: #2F3A22;
@@ -21,8 +28,11 @@ const CSS = `
 .gz-gallery { display: grid; grid-template-columns: 56px 1fr; gap: 12px; }
 .gz-thumbs { display: flex; flex-direction: column; gap: 10px; }
 .gz-thumb { width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--olive); }
-.gz-hero { min-height: 520px; border-radius: 0; background: #C9C4BC; display: flex; align-items: flex-end; justify-content: center; gap: 22px; padding: 40px 24px; }
-.gz-bar { width: 84px; border-radius: 28px 28px 8px 8px; }
+.gz-hero { aspect-ratio: ${HERO_W} / ${HERO_H}; overflow: hidden; border-radius: 0; background: #C4BBB3; }
+/* The box takes the photo's own shape, so there is no letterbox and therefore no seam: the photo's
+   backdrop is mottled (corners sampled from #9E948C to #E6E0D9), so no single flat colour can match
+   it. #C4BBB3 (mean of the top strip) is only the placeholder shown while the image loads. */
+.gz-hero img { display: block; width: 100%; height: 100%; object-fit: contain; }
 .gz-info { max-width: 460px; margin: 0 auto; text-align: center; }
 .gz-title { font-family: 'EB Garamond', serif; font-weight: 500; font-size: 2.4rem; line-height: 1.05; margin: 8px 0 16px; }
 .gz-price { font-size: 0.95rem; margin-bottom: 8px; }
@@ -49,8 +59,6 @@ const CSS = `
   .gz-product { grid-template-columns: 1fr; padding: 0 16px 32px; gap: 24px; }
   .gz-gallery { grid-template-columns: 1fr; }
   .gz-thumbs { flex-direction: row; order: 2; }
-  .gz-hero { min-height: 300px; padding: 24px 12px; gap: 12px; }
-  .gz-bar { width: 22%; }
   .gz-cols { grid-template-columns: 1fr; }
   .gz-lineup { padding: 16px 16px 40px; }
   .gz-title, .gz-lineup h2 { font-size: 1.9rem; }
@@ -87,11 +95,16 @@ export function renderGrazaStore(root: HTMLElement): void {
           <div class="gz-thumbs" aria-hidden="true">
             ${['#8E9A5B', '#C9A227', '#7A4B2A', '#3C422E', '#D1E030', '#B5651D'].map((k) => `<span class="gz-thumb" style="background:${k}"></span>`).join('')}
           </div>
-          <div class="gz-hero" role="img" aria-label="Product image placeholder">
-            <span class="gz-bar" style="height:70%;background:#E4CB1E"></span>
-            <span class="gz-bar" style="height:78%;background:#C9D93A"></span>
-            <span class="gz-bar" style="height:56%;background:#8FBF4F"></span>
-            <span class="gz-bar" style="height:64%;background:#A8B020"></span>
+          <div class="gz-hero">
+            <img
+              src="${heroLarge}"
+              srcset="${heroSmall} 800w, ${heroLarge} ${HERO_W}w"
+              sizes="(max-width: 800px) 100vw, 55vw"
+              width="${HERO_W}"
+              height="${HERO_H}"
+              alt="Graza Frizzle, Sizzle, Drizzle and spray olive oil bottles"
+              decoding="async"
+            />
           </div>
         </div>
         <div class="gz-info">
