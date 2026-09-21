@@ -11,6 +11,8 @@ Mobile (375px): [Graza](docs/screens/store-graza-375.png) | [Maurten](docs/scree
 differently (floating vs docked, greets vs silent, in-chat vs strip understanding) because their
 *tokens* differ, never because the code forks.
 
+Design decisions and rationale: [DECISIONS.md](DECISIONS.md)
+
 ## What this is
 
 - `dist/agent.js`: one custom element (`<minimal-agent>`, open Shadow DOM) styled only through
