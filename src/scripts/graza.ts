@@ -67,7 +67,12 @@ export function buildGrazaScript(ctx: GrazaScriptContext): Script {
             variant: 'productAction',
             title: '{drizzle.name}',
             lines: cardLines,
-            action: { action: 'add-to-cart', productId: 'drizzle', label: 'Just {drizzle.name}' },
+            action: {
+              action: 'add-to-cart',
+              productId: 'drizzle',
+              label: 'Just {drizzle.name}',
+              replyId: 'just-drizzle',
+            },
           },
           { kind: 'quickReplies', options: [{ id: 'get-trio', label: 'Get the trio' }] },
           {

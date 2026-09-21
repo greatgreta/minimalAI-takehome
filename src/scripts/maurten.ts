@@ -91,6 +91,7 @@ export function buildMaurtenScript(): Script {
             action: 'add-to-cart',
             productId: 'gel160',
             label: 'Add to cart',
+            replyId: 'add-to-cart',
           },
         ],
       },

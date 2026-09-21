@@ -32,6 +32,8 @@ export type Turn =
       action: 'add-to-cart' | 'checkout';
       productId?: string;
       label: string;
+      /** Script reply id this button plays when tapped. Absent means a handoff (e.g. checkout). */
+      replyId?: string;
     };
 
 export type InsightCard =
@@ -42,7 +44,7 @@ export type InsightCard =
       variant: 'productAction';
       title: string;
       lines: string[];
-      action: { action: 'add-to-cart'; productId: string; label: string };
+      action: { action: 'add-to-cart'; productId: string; label: string; replyId?: string };
     };
 
 /** A single scripted exchange: what the user does, and how the agent replies. */

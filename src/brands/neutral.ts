@@ -31,3 +31,22 @@ export const neutral: Tokens = {
     understandingLead: "Here's what I'm hearing:",
   },
 };
+
+// Minimal pack so the neutral default has a (tiny) conversation. Imported type-only to avoid a cycle.
+export const neutralPack: import('./registry').BrandPack = {
+  data: {},
+  script: () => ({
+    steps: [
+      {
+        input: { kind: 'text', text: 'Hello' },
+        turns: [
+          {
+            kind: 'text',
+            from: 'agent',
+            text: 'This is the neutral default. Paste a snippet with a brand config to see a brand.',
+          },
+        ],
+      },
+    ],
+  }),
+};
