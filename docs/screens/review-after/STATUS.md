@@ -1,5 +1,7 @@
 # Review status after fixes
 
+The screenshots were removed from the repo to keep it small. Run node scripts/review.mjs <folder> against npm run preview to regenerate them.
+
 Unaffiliated design exercise. Prices, offers and product data are fictional.
 
 Same walkthrough as `../review/` (`scripts/review.mjs`), re-run after the fixes: 0 automatic findings

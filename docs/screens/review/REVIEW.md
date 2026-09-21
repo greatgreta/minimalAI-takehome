@@ -1,5 +1,7 @@
 # Walkthrough review (before fixes)
 
+The screenshots were removed from the repo to keep it small. Run node scripts/review.mjs <folder> against npm run preview to regenerate them.
+
 Unaffiliated design exercise. Prices, offers and product data are fictional.
 
 Method: `scripts/review.mjs` drives both stores click by click in system Chrome at 1440x900 and 375x812
