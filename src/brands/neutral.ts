@@ -20,7 +20,12 @@ export const neutral: Tokens = {
     body: { family: 'system-ui, sans-serif', weight: 400, size: 0.95, lineHeight: 1.5 },
     small: { family: 'system-ui, sans-serif', weight: 400, size: 0.8, lineHeight: 1.4 },
   },
-  shape: { radius: { sm: 8, md: 12, lg: 16, pill: 999 }, border: 1 },
+  shape: {
+    radius: { sm: 8, md: 12, lg: 16, pill: 999 },
+    border: 1,
+    dock: 12,
+    shadow: '0 2px 10px color-mix(in srgb, var(--agent-ink) 22%, transparent)',
+  },
   density: 1,
   motion: { duration: 200, easing: 'cubic-bezier(0.2, 0, 0, 1)' },
   placement: 'floating',

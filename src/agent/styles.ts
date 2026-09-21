@@ -22,7 +22,7 @@ button, input { font: inherit; color: inherit; }
 .launcher, .panel {
   pointer-events: auto;
   /* elevation cue from the ink token, so a launcher stays distinct from a same-coloured host button */
-  box-shadow: 0 2px 10px color-mix(in srgb, var(--agent-ink) 22%, transparent);
+  box-shadow: var(--agent-shadow);
 }
 
 /* ---------- launcher ---------- */
@@ -44,7 +44,7 @@ button, input { font: inherit; color: inherit; }
 .docked .launcher {
   right: 0;
   bottom: var(--agent-offset-bottom, 0px);
-  border-radius: var(--agent-radius-md) 0 0 0;
+  border-radius: var(--agent-radius-dock) 0 0 0;
   border-right: 0;
   border-bottom: 0;
 }
@@ -72,7 +72,7 @@ button, input { font: inherit; color: inherit; }
   height: min(620px, calc(100vh - 24px));
   border-right: 0;
   border-bottom: 0;
-  border-radius: var(--agent-radius-md) 0 0 0;
+  border-radius: var(--agent-radius-dock) 0 0 0;
 }
 .docked .panel.expanded { width: min(640px, 100vw); height: min(760px, calc(100vh - 96px)); }
 .panel.minimised { height: auto; }
@@ -213,6 +213,7 @@ button, input { font: inherit; color: inherit; }
     border-bottom: 0;
     border-radius: var(--agent-radius-lg) var(--agent-radius-lg) 0 0;
   }
+  .docked .panel, .docked .panel.expanded { border-radius: var(--agent-radius-dock) var(--agent-radius-dock) 0 0; }
   .panel.minimised, .docked .panel.minimised { height: auto; }
   .expand { display: none; }
   .icon-btn { min-width: 44px; min-height: 44px; }

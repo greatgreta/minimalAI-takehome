@@ -40,6 +40,10 @@ export interface ShapeTokens {
   radius: RadiusScale;
   /** border width in px */
   border: number;
+  /** px; the outer corner of a docked launcher and panel (0 = square, flush to the edge) */
+  dock: number;
+  /** CSS box-shadow for the launcher and panel; may use var(--agent-ink) */
+  shadow: string;
 }
 
 export interface MotionTokens {
@@ -99,7 +103,7 @@ export function cloneTokens(t: Tokens): Tokens {
       body: { ...t.type.body },
       small: { ...t.type.small },
     },
-    shape: { radius: { ...t.shape.radius }, border: t.shape.border },
+    shape: { radius: { ...t.shape.radius }, border: t.shape.border, dock: t.shape.dock, shadow: t.shape.shadow },
     density: t.density,
     motion: { ...t.motion },
     placement: t.placement,

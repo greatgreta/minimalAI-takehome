@@ -21,7 +21,12 @@ export const graza: Tokens = {
     body: { family: "'DM Sans', system-ui, sans-serif", weight: 400, size: 0.95, lineHeight: 1.5 },
     small: { family: "'DM Sans', system-ui, sans-serif", weight: 400, size: 0.8, lineHeight: 1.4 },
   },
-  shape: { radius: { sm: 12, md: 20, lg: 30, pill: 999 }, border: 1 },
+  shape: {
+    radius: { sm: 12, md: 20, lg: 30, pill: 999 },
+    border: 1,
+    dock: 20,
+    shadow: '0 2px 10px color-mix(in srgb, var(--agent-ink) 22%, transparent)',
+  },
   density: 1.05,
   motion: { duration: 240, easing: 'cubic-bezier(0.34, 1.4, 0.64, 1)' },
   placement: 'floating',

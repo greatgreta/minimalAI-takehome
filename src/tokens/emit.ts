@@ -48,6 +48,8 @@ export function emitVars(t: Tokens): Record<string, string> {
     // nested corners (card inside panel, chip inside strip)
     '--agent-radius-md-inner': `${innerRadius(t.shape.radius.md, pad)}px`,
     '--agent-radius-lg-inner': `${innerRadius(t.shape.radius.lg, pad)}px`,
+    '--agent-radius-dock': `${t.shape.dock}px`,
+    '--agent-shadow': t.shape.shadow,
     '--agent-border': `${t.shape.border}px`,
 
     // motion
