@@ -1,3 +1,5 @@
-// Entry for the Configuration page ("/configuration"). Stub in Phase 0; demo bar added in Phase 5.
-// Configuration UI to be added.
-export {};
+// Entry for the Configuration page ("/configuration"). Intentionally empty for now: Greta designs
+// the UI. The codec, sliders, contrast guard and buildSnippet already exist for it (see README).
+import { mountDemoBar } from '../demo-bar/demo-bar';
+
+mountDemoBar('configuration');
