@@ -392,3 +392,31 @@ quantised hex it will emit. Regression test added in `tests/contrast.test.ts`.
   any panel is open under 1120px wide (it already did this for the docked panel). The Graza layout test
   now checks overlap only while the bar is visible, as the Maurten one already did.
 - Unchanged: at 480px and below the panel is still a full-width bottom sheet flush to the bottom edge.
+
+---
+
+## Maurten panel polish and context strip
+
+### What changed
+
+- Maurten panel title is "Ask Maurten" (`voice.title` in `src/brands/maurten.ts`). Graza is still "Agent".
+- Two new shape tokens, `shape.shadow` (CSS box-shadow for launcher and panel) and `shape.dock` (outer
+  corner radius of a docked launcher and panel), emitted as `--agent-shadow` and `--agent-radius-dock`.
+  Maurten: shadow `0 1px 2px` at 10% ink, dock 0 (square). Graza and neutral keep the previous look
+  (shadow unchanged; dock equals their md radius and is unused because they float).
+- The "Context / Nothing yet" strip is not rendered until the script has produced context.
+
+### Decision points
+
+- **Tokens, not a Maurten special case.** The look difference is data in `src/brands/`, so the no-brand-leak
+  rule still holds. Alternative: hard-code square docked corners for every brand.
+- **`dock` sits beside the radius scale, not inside it,** so the shape slider and the radius override do
+  not touch it and the monotonic-scale fuzz test is unaffected.
+- **Bottom sheet at 480px and below:** a docked panel's top corners now use `--agent-radius-dock` too, so
+  Maurten's sheet is square as well. Graza's sheet is unchanged.
+- Removed the now-unused "empty" argument from `ConstraintStrip`.
+
+### Assumptions
+
+- "both closed and expanded" was read as the docked launcher (closed) and the docked panel (normal and
+  expanded): all three now measure 0px radius and the minimal shadow in the browser.
