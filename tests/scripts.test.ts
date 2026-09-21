@@ -6,7 +6,7 @@ import { grazaCatalogue } from '../src/catalogue/graza';
 import { maurtenCatalogue } from '../src/catalogue/maurten';
 import { graza } from '../src/brands/graza';
 import { maurten } from '../src/brands/maurten';
-import { renderTranscript } from '../src/agent/transcript';
+import { renderTranscript, resolvePlaceholders } from '../src/agent/transcript';
 import { ScriptedBrain, type Script } from '../src/agent/brain';
 import { cloneTokens } from '../src/tokens/schema';
 
@@ -51,6 +51,41 @@ describe('graza script', () => {
   it('greets with the brand greeting', () => {
     const t = renderTranscript(grazaScript(), graza, grazaCatalogue);
     expect(t.split('\n')[0]).toBe("Agent: Hey! Looking for an oil? Tell me what's cooking.");
+  });
+});
+
+describe('graza "Get the trio" branch', () => {
+  const script = grazaScript();
+
+  it('is a side branch built only from data and ends in an add-to-cart for the trio', () => {
+    const b = script.branches!['get-trio'];
+    expect(b.label).toBe('Get the trio');
+    const text = b.turns.find((t) => t.kind === 'text');
+    expect(resolvePlaceholders((text as { text: string }).text, grazaCatalogue)).toBe(
+      'The trio: Sizzle, Drizzle, Frizzle, 40 EUR.',
+    );
+    expect(b.turns).toContainEqual(
+      expect.objectContaining({ kind: 'action', action: 'add-to-cart', productId: 'trio' }),
+    );
+  });
+
+  it('plays without advancing the main script', () => {
+    const brain = new ScriptedBrain(script);
+    let state = brain.initial();
+    state = brain.next({ type: 'send' }, state).state;
+    state = brain.next({ type: 'send' }, state).state; // now waiting for "Just Drizzle"
+    const before = state.index;
+    expect(brain.isBranch('get-trio')).toBe(true);
+    const out = brain.next({ type: 'reply', id: 'get-trio' }, state);
+    expect(out.state.index).toBe(before);
+    expect(out.turns[0]).toMatchObject({ kind: 'text', from: 'user', text: 'Get the trio' });
+    // the main path still continues afterwards
+    const next = brain.next({ type: 'reply', id: 'just-drizzle' }, out.state);
+    expect(next.state.index).toBe(before + 1);
+  });
+
+  it('leaves the main Graza copy snapshot untouched (branches are not in the transcript)', () => {
+    expect(renderTranscript(script, graza, grazaCatalogue)).not.toContain('The trio:');
   });
 });
 

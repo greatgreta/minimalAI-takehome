@@ -32,7 +32,23 @@ export function buildGrazaScript(ctx: GrazaScriptContext): Script {
     ? "Nice, then you get {offer.value}% off your next order. Grab {drizzle.name} now and come back for {sizzle.name} once you're cooking more, with the discount."
     : "Welcome, then. Check out when you're ready.";
 
+  // Assumption (not Greta's copy): the reply to "Get the trio", built only from data.
+  const branches: Script['branches'] = {
+    'get-trio': {
+      label: 'Get the trio',
+      turns: [
+        {
+          kind: 'text',
+          from: 'agent',
+          text: 'The trio: {sizzle.name}, {drizzle.name}, {frizzle.name}, {trio.price} EUR.',
+        },
+        { kind: 'action', action: 'add-to-cart', productId: 'trio', label: 'Add the trio' },
+      ],
+    },
+  };
+
   return {
+    branches,
     steps: [
       {
         input: {

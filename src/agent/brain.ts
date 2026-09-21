@@ -61,8 +61,18 @@ export interface ScriptStep {
   turns: Turn[];
 }
 
+/**
+ * A side reply: a quick reply that is not on the main path. Tapping it plays `turns` and leaves the
+ * script where it is, so the main path can still continue afterwards.
+ */
+export interface Branch {
+  label: string;
+  turns: Turn[];
+}
+
 export interface Script {
   steps: ScriptStep[];
+  branches?: Record<string, Branch>;
 }
 
 export interface BrainState {
@@ -73,6 +83,11 @@ export interface BrainOutput {
   turns: Turn[];
   state: BrainState;
   done: boolean;
+  /**
+   * Index of the main step that will answer any controls in these turns (the state index after the
+   * turns play). Controls are stale once the script has moved past it.
+   */
+  step: number;
 }
 
 export type AgentEvent =
@@ -86,6 +101,8 @@ export interface AgentBrain {
   next(event: AgentEvent, state: BrainState): BrainOutput;
   /** The user input the composer should present next, if any (text to pre-fill or replies to tap). */
   pending(state: BrainState): ScriptStep['input'];
+  /** Whether `id` is a side branch (playable without advancing the script). */
+  isBranch(id: string): boolean;
 }
 
 export class ScriptedBrain implements AgentBrain {
@@ -100,19 +117,38 @@ export class ScriptedBrain implements AgentBrain {
     return step ? step.input : null;
   }
 
+  isBranch(id: string): boolean {
+    return Boolean(this.script.branches?.[id]);
+  }
+
   next(event: AgentEvent, state: BrainState): BrainOutput {
     if (event.type === 'reset') {
-      return { turns: [], state: this.initial(), done: this.script.steps.length === 0 };
+      return { turns: [], state: this.initial(), done: this.script.steps.length === 0, step: 0 };
     }
 
     const step = this.script.steps[state.index];
+
+    // A side branch: echo the choice, play its turns, and do not advance.
+    if (event.type === 'reply') {
+      const branch = this.script.branches?.[event.id];
+      const isMainReply = step?.input?.kind === 'reply' && step.input.id === event.id;
+      if (branch && !isMainReply) {
+        return {
+          turns: [{ kind: 'text', from: 'user', text: branch.label }, ...branch.turns],
+          state,
+          done: state.index >= this.script.steps.length,
+          step: state.index,
+        };
+      }
+    }
+
     if (!step) {
-      return { turns: [], state, done: true };
+      return { turns: [], state, done: true, step: state.index };
     }
 
     // 'open' only advances an opening (input === null) step.
     if (event.type === 'open' && step.input !== null) {
-      return { turns: [], state, done: false };
+      return { turns: [], state, done: false, step: state.index };
     }
 
     const turns: Turn[] = [];
@@ -129,6 +165,7 @@ export class ScriptedBrain implements AgentBrain {
       turns,
       state: { index: nextIndex },
       done: nextIndex >= this.script.steps.length,
+      step: nextIndex,
     };
   }
 }
