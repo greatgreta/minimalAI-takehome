@@ -457,3 +457,60 @@ quantised hex it will emit. Regression test added in `tests/contrast.test.ts`.
 
 - The Graza panel header now says "Olive" instead of "Agent" (`voice.title` in `src/brands/graza.ts`). The
   panel's aria-label follows the same value. Covered by the Graza case in `tests/agent-controls.spec.ts`.
+
+---
+
+## Job 7 - The /configuration page
+
+### What is scripted and what is real
+
+- **Scripted:** the store reading (`readStore()` returns the Graza profile; comment says a real version would
+  call an extraction service; no network anywhere), the four reading steps, and the whole conversation
+  (`src/configuration/script.ts`, a pure state machine with unit tests).
+- **Real:** the table values are formatted from `src/brands/profiles.ts` and the Graza tokens
+  (`tokenRows`), the answer rows come from the resolved config, and the snippet is built with the real
+  `defaultConfig`, `buildSnippet` and `location.origin`. The Playwright test decodes the copied text and checks
+  placement floating, opening greets, energy 0.7 and shape 0.5.
+
+### Decision points
+
+- **Domain:** `www.graza.co` (checked live: graza.com and graza.co both redirect to www.graza.co). It lives in
+  `src/brands/profiles.ts` with the name, look summary and accent wording, so `src/configuration` has no brand
+  literals and the no-brand-leak test now scans it (only the `../brands/profiles` import is allowed).
+- **Vibe moves energy only** (0.7); shape stays 0.5, so the built agent keeps Graza's own 12 / 20 / 30 radii and
+  the Radii row stays true. The Vibe row reads "Chatty and vibrant, Energy 0.7".
+- **Design measured from the PNGs, not the notes.** Where they differ: rail and top-bar borders are 2px (notes
+  said 1px); the left bottom card starts at x=166 (notes 167); vertical gap card 1 to bottom cards is 35px; chips
+  use a grey fill (`#f0f0ef`), not a warm one; the table sits 77px below the card top and is centred.
+- **Type:** ABC Areal (files copied to `public/fonts`). At 16px and 20px it runs about 0.42px narrower than the
+  design's text, and the 30px title 0.69px wider, so letter-spacing is set from measured string widths
+  (`--cfg-track-text`, `--cfg-track-title`); 11px and 13px already matched. Table uses Source Serif 4.
+- **Reading steps run in one row** in card 1's empty band (the card is a fixed 307px, so four stacked lines would
+  overflow) and clear when the reading finishes, because the "after read" screenshot shows the band empty.
+- **Ghost text** "Waiting for your store" is shown in both cards at load and after Reset (per your answer), although
+  the empty-state screenshot shows them blank.
+- **Field value at load:** the address is filled in and locked at load, as in your written behaviour; the
+  empty-state screenshot shows the italic placeholder instead. The placeholder is styled but only shows if the
+  value is ever empty.
+- **Reset link** stays visible after reading starts (per your notes); the "after read" screenshot has none.
+- **Layout choices the design did not specify:** rail is sticky full height, top bar scrolls; bottom padding 112px
+  with the demo bar's own body padding removed on this page; below 1000px the rail hides and cards stack.
+- **Commits** are fewer and larger than the planned seven: the page controller, chat, styles and HTML depend on each
+  other, so they went in one commit.
+
+### One pixel comparison (scripts/compare-config.mjs, run once as requested)
+
+1.75% of pixels differ in the empty state and 2.39% in the filled state (threshold 24/255 per channel, demo bar
+hidden). Remaining differences, not iterated on: glyph shapes and hinting in every text run (title, subtitle,
+headings, body: ABC Areal versus the raster's rendering, even with widths matched); card corner arcs (the measured
+radius of 20 is right to within about a pixel, but the arcs still show in the diff); the rail icon dots (mine are
+slightly denser and lighter); the ghost text and Reset link that the screenshots do not have; the input value versus
+the placeholder in the empty state; the token table's outer margin (the design is a pasted raster with a 12px
+off-white frame, mine is the bare table); the typing dots visible at the capture moment.
+
+### Notes
+
+- Helper text is `#767676` on `#fafafa` at 11px (about 4.3:1), slightly under WCAG AA. Copied as designed.
+- `@fontsource/source-serif-4` was installed with a throwaway npm cache (`~/.npm` has root-owned files) and the
+  lockfile has no versionless entries.
+- Fonts were committed as instructed.
