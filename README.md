@@ -2,34 +2,42 @@
 
 Unaffiliated design exercise. Prices, offers and product data are fictional.
 
+![Graza replica with the agent open](docs/screens/home-graza.png)
+![Maurten replica with the agent open](docs/screens/home-maurten.png)
+
+Mobile (375px): [Graza](docs/screens/store-graza-375.png) | [Maurten](docs/screens/store-maurten-375.png)
+
 **Thesis: styled vs built.** One embeddable agent, two brands. Graza and Maurten look AND behave
-differently because their *tokens* differ, never because the code forks.
+differently (floating vs docked, greets vs silent, in-chat vs strip understanding) because their
+*tokens* differ, never because the code forks.
 
 ## What this is
 
-- `dist/agent.js` - one custom element (`<minimal-agent>`, Shadow DOM) styled only through
-  `--agent-*` CSS custom properties. Same code for every brand.
-- `/` - Graza store replica, embedding the agent with the exact `<script>` a merchant would paste.
-- `/maurten` - Maurten store replica, same agent, different tokens.
-- `/configuration` - configuration page (design to be added later).
+- `dist/agent.js`: one custom element (`<minimal-agent>`, open Shadow DOM) styled only through
+  `--agent-*` CSS custom properties. Same code for every brand. Works at 375px.
+- `/`: Graza store replica, loading the agent with the exact `<script>` a merchant would paste.
+- `/maurten`: Maurten store replica, same agent, different tokens.
+- `/configuration`: empty page for now (see below).
 - A neutral demo bar (bottom centre) switches between the three.
+- A scripted, deterministic conversation per brand (no LLM): an opening message with at least two
+  constraints, one obstacle, and an action at the end.
 
 ## Run
 
 ```bash
 npm i
-npm run dev       # dev server (clean URLs: /, /maurten, /configuration)
-npm run build     # builds the pages + dist/agent.js
+npm run dev       # dev server with clean URLs (see the note on /agent.js below)
+npm run build     # builds the three pages and dist/agent.js (IIFE)
 npm run preview   # serves the production build
 npm test          # unit tests (Vitest)
+npm run test:e2e  # Playwright 375px spec; needs Google Chrome and a prior build
+npm run shots     # regenerates docs/screens/*.png; needs Google Chrome and a prior build
 ```
 
-## Status
+URLs: `/`, `/maurten`, `/configuration`, `/agent.js`.
 
-Scaffold in progress - see `AI_LOG.md` for phase-by-phase decisions.
-
-The token pipeline, sliders, contrast guard, config codec and `buildSnippet` are built and tested
-without a UI, so the configuration page can be wired to them later.
+In `npm run dev`, `/agent.js` is a small loader for the source entry, so the snippet's `data-config`
+is not read there. Use `npm run build && npm run preview` to see exact merchant behaviour.
 
 ## Configuration page
 
@@ -46,11 +54,25 @@ The logic it will drive already exists, tested and UI-free:
 
 ```
 src/tokens/     token schema, CSS emitter, OKLCH contrast guard, sliders
-src/config/     AgentConfig codec + snippet builder
-src/brands/     brand token configs (the only place brand values live, with tokens code)
+src/config/     AgentConfig codec + snippet builder (brand-blind)
+src/brands/     brand token configs and packs (the only place brand values live, with tokens code)
 src/catalogue/  fictional product data (every field verified:false)
-src/agent/      the embeddable custom element (styled only via --agent-* vars)
-src/scripts/    deterministic per-brand conversations
+src/agent/      the embeddable custom element, brain interface, components (brand-blind)
+src/scripts/    deterministic per-brand conversations (copy with {placeholders})
 src/hosts/      store replicas (brand values allowed here)
 src/demo-bar/   neutral demo navigation
+vite/           dev/build plugins: clean URLs, snippet injection
+tests/          unit tests, no-brand-leak, brand fuzz, Playwright 375px spec
+docs/           graza-copy.md (verbatim source of the Graza script), screenshots
 ```
+
+## Honest limits
+
+- The agent is scripted. There is no LLM; `AgentBrain` is the interface an LLM brain would implement.
+- The configuration page is not built yet.
+- No backend. The postcode is checked in memory only and never stored or sent.
+- Stores are replicas with flat colour blocks instead of imagery; all product data is fictional and
+  every field is marked `verified: false`.
+- Brand fonts are licensed, so self-hosted stand-ins are used (EB Garamond and DM Sans, Inter).
+
+Unaffiliated design exercise. Prices, offers and product data are fictional.
