@@ -225,3 +225,24 @@ quantised hex it will emit. Regression test added in `tests/contrast.test.ts`.
 ### Cut
 
 - None. (Playwright 375 spec, brand fuzz test and screenshots all built.)
+
+---
+
+## Phase 7 - Docs and deploy readiness
+
+### Decision points
+
+- **README embeds the two desktop shots at the top** and links the 375px shots, as asked.
+- **Verified from a clean clone of the pushed repo** (`npm ci`, `npm test`, `npm run build`,
+  `npm run preview`): `/`, `/maurten`, `/configuration` and `/agent.js` all return 200.
+- **Vercel:** Framework Vite, build command `npm run build`, output directory `dist`. `vercel.json`
+  sets `cleanUrls`. The snippet uses a relative `/agent.js`, so it works on any deployed origin.
+
+### Assumptions
+
+- `npm audit` reports vulnerabilities in dev tooling (Vite/Vitest transitive deps). Not addressed; none
+  ship in `dist`.
+
+### Cut
+
+- None.
