@@ -31,7 +31,9 @@ function nudgeForeground(
   target: number,
 ): { hex: string; contrast: number } {
   const { L, C, h } = rgbToOklch(parseHex(fgHex));
-  const contrastAt = (LL: number) => contrastRatio(oklchToRgb({ L: LL, C, h }), bg);
+  // Measure the colour we will actually emit: quantise to 8-bit hex first, so a pass is a real pass.
+  const contrastAt = (LL: number) =>
+    contrastRatio(parseHex(toHex(oklchToRgb({ L: LL, C, h }))), bg);
 
   let best = contrastAt(L);
   if (best >= target) return { hex: fgHex, contrast: best };
