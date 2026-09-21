@@ -26,6 +26,7 @@ export const maurten: Tokens = {
   placement: 'docked',
   behaviour: { opening: 'silent', understanding: 'strip' },
   voice: {
+    launcher: 'Ask Maurten',
     placeholder: 'Ask Maurten...',
   },
 };
