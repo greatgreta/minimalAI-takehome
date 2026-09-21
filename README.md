@@ -34,6 +34,9 @@ npm run preview   # serves the production build
 npm test          # unit tests (Vitest)
 npm run test:e2e  # Playwright 375px spec; needs Google Chrome and a prior build
 npm run shots     # regenerates docs/screens/*.png; needs Google Chrome and a prior build
+node scripts/config-shots.mjs    # retakes the /configuration screenshots (needs a running preview)
+node scripts/review.mjs <folder> # click-by-click walkthrough screenshots of both stores (needs a running preview)
+node scripts/compare-config.mjs  # historical pixel comparison against the original Figma references
 ```
 
 URLs: `/`, `/maurten`, `/configuration`, `/agent.js`.

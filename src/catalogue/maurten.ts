@@ -2,7 +2,7 @@
 // exactly, never invented). No prices in this catalogue. Fictional attributes carry verified:false
 // + a TODO. Dates are derived from a FROZEN demo date. carbsDiff and daysLeft are derived.
 
-import { addDays, daysBetween, formatDate, parseISO } from './util';
+import { addDays, daysBetween, parseISO } from './util';
 
 export interface MaurtenProduct {
   id: string;
@@ -153,6 +153,3 @@ export const maurtenCatalogue = {
 };
 
 export type MaurtenCatalogue = typeof maurtenCatalogue;
-
-// Re-export for convenience in tests.
-export { formatDate };
